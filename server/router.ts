@@ -4,17 +4,16 @@ import OAuth from "oauth-1.0a";
 import crypto from "crypto";
 import axios from "axios";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+import { env } from "./src/config/env";
 
-dotenv.config();
 
 const router = express.Router();
 router.use(cookieParser());
 
 const twitterConfig = {
-    consumerKey: process.env.TWITTER_API_KEY!,
-    consumerSecret: process.env.TWITTER_API_SECRET_KEY!,
-    callbackUrl: process.env.TWITTER_CALLBACK_URL!,
+    consumerKey: env.TWITTER_API_KEY!,
+    consumerSecret: env.TWITTER_API_SECRET_KEY!,
+    callbackUrl: env.TWITTER_CALLBACK_URL!,
 };
 
 const oauth = new OAuth({
@@ -25,7 +24,6 @@ const oauth = new OAuth({
     },
 });
 
-// Step 1: Get Twitter auth link
 router.get("/api/twitter/login", async (req, res) => {
     try {
         if (!twitterConfig.consumerKey || !twitterConfig.consumerSecret) {
@@ -59,7 +57,6 @@ router.get("/api/twitter/login", async (req, res) => {
     }
 });
 
-// Step 2: Handle Twitter callback
 router.get("/api/twitter/callback", async (req, res) => {
     try {
         const { oauth_token, oauth_verifier } = req.query;
@@ -110,7 +107,7 @@ router.get("/api/twitter/callback", async (req, res) => {
             res.cookie("twitter_email", email, { httpOnly: false });
         }
 
-        res.redirect(`${process.env.FRONTEND_ORIGIN}/projects/new`);
+        res.redirect(`${env.FRONTEND_ORIGIN}/projects/new`);
     } catch (error: any) {
         console.error('Error handling Twitter callback:', error.message);
         res.status(500).json({
@@ -152,7 +149,6 @@ router.get('/api/twitter/logout', (req, res) => {
 router.get('/api/getBelieveTokens/', async (req, res) => {
     try {
         const { twitterHandle } = req.query;
-        console.log(twitterHandle);
         let tokens;
         if (twitterHandle) {
            //TODO: prevent from injection attack
@@ -161,12 +157,40 @@ router.get('/api/getBelieveTokens/', async (req, res) => {
             tokens = await db.collection('tokens').get() || [];
         }
 
-        console.log(tokens.docs.map(doc => doc.data()));
         return res.json(tokens.docs.map(doc => doc.data()));
     } catch (error: any) {
         console.error('Error fetching believe tokens:', error.response.data);
 
         return res.status(500).json({ error: 'Failed to fetch believe tokens' });
+    }
+});
+
+router.post('/api/addBelieveTokenNeeds', async (req, res) => {
+    try {
+        const twitter_handle = req.cookies.twitter_handle;
+        const { tokenAddress, tweetLink, twitterHandle, description, needs, extraInfo, contactEmail } = req.body;
+
+        const isExist = await db.collection('tokens')
+            .where('tokenAddress', '==', tokenAddress)
+            .get();
+
+            if (!isExist.docs.length) return res.status(404).json({ error: 'Token not found' });
+
+            //TODO: remove comment
+            // if (twitter_handle !== twitterHandle || isExist.docs[0].data().author !== twitter_handle) return res.status(401).json({ error: 'Unauthorized' });
+        
+        await db.collection('tokens').doc(isExist.docs[0].id).update({
+            needs,
+            extraInfo,
+            contactEmail,
+            description,
+            tweetLink,
+        });
+
+        return res.json({ message: 'Believe token needs added' });
+    } catch (error: any) {
+        console.error('Error creating believe token:', error);
+        return res.status(500).json({ error: 'Failed to add believe token needs' });
     }
 });
 

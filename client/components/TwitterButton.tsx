@@ -1,17 +1,13 @@
 import { useTwitterLogin, useTwitterLogout } from "../hooks/useTwitterLogin";
 import { useTwitterSession } from "../hooks/useTwitterSession";
-import { useState } from "react";
 
 export default function TwitterLoginButton() {
     const { login, isLoading: isLoginLoading } = useTwitterLogin();
     const { twitterHandle, twitterAvatar, isLoading: isSessionLoading } = useTwitterSession();
     const { logout, isLoading: isLogoutLoading } = useTwitterLogout();
-    const [isLoggingIn] = useState(false);
-    const [isLoggingOut] = useState(false);
 
-    if (isSessionLoading || isLoginLoading || isLogoutLoading) {
+    if (isSessionLoading) {
         return (
-
             <div className="absolute top-6 right-6 z-50">
                 <svg className="animate-spin h-6 w-6 text-meme-blue" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -31,10 +27,10 @@ export default function TwitterLoginButton() {
                     </span>
                     <button
                         onClick={logout}
-                        disabled={isLoggingOut}
+                        disabled={isLogoutLoading}
                         className="ml-4 px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isLoggingOut ? (
+                        {isLogoutLoading ? (
                             <div className="flex items-center">
                                 <svg className="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -51,9 +47,9 @@ export default function TwitterLoginButton() {
                 <button
                     className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                     onClick={login}
-                    disabled={isLoggingIn}
+                    disabled={isLoginLoading}
                 >
-                    {isLoggingIn ? (
+                    {isLoginLoading ? (
                         <div className="flex items-center">
                             <svg className="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -62,7 +58,7 @@ export default function TwitterLoginButton() {
                             Connecting...
                         </div>
                     ) : (
-                        "Login with Twitter"
+                        "Login with Twitter/X"
                     )}
                 </button>
             )}

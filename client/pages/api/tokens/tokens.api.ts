@@ -6,11 +6,20 @@ export type Token = {
     tokenSymbol: string;
     tokenAddress: string;
     createdAt: number;
+    description?: string;
+    extraInfo?: string;
+    needs?: string[];
+    tweetLink?: string;
+    contactEmail?: string;
 };
 
-export async function getTokens(twitterHandle?: string): Promise<Token[]> {
-    const queryParams = twitterHandle ? `?twitterHandle=${twitterHandle}` : '';
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBelieveTokens${queryParams}`);
+export async function getTokens(): Promise<Token[]> {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBelieveTokens`);
 
+    return response.data;
+};
+
+export async function getTokensByTwitterHandle(twitterHandle: string): Promise<Token[]> {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBelieveTokens?twitterHandle=${twitterHandle}`);
     return response.data;
 };

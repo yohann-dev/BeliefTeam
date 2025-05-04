@@ -1,23 +1,27 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
-import router from './router';
-// Load environment variables
-dotenv.config();
+import cookieParser from 'cookie-parser';
+import twitterRoutes from './src/routes/twitterRoutes';
+import believeTokensRoutes from './src/routes/believeTokensRoutes';
+import { env } from './src/config/env';
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_ORIGIN,
-  credentials: true,
+    origin: env.FRONTEND_ORIGIN,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
+app.use(cookieParser());
 app.use(express.json());
 
-app.use('/', router);
+// Routes
+app.use('/', twitterRoutes);
+app.use('/', believeTokensRoutes);
 
 // Start server
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(env.PORT, () => {
+    console.log(`Server is running on port ${env.PORT}`);
 }); 
