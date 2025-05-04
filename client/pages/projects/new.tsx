@@ -48,29 +48,12 @@ export default function NewProject() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
-      {/* Top-right Twitter button */}
-      {/* <div className="absolute top-6 right-6 z-50">
-        {twitterHandle ? (
-          <div className="flex items-center space-x-3 bg-white p-2 rounded-xl shadow border border-gray-200">
-            <img src={twitterAvatar || ""} alt="Profile" className="h-8 w-8 rounded-full" />
-            <span className="text-gray-800 font-medium">
-              @{twitterHandle}
-            </span>
-            <button
-              onClick={() => logout()}
-              className="ml-4 px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition"
-            >
-              Disconnect
-            </button>
-          </div>
-        ) : <TwitterButton />}
-      </div> */}
       <TwitterButton />
 
       <BackButton />
       <div className="max-w-xl mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-extrabold text-gray-900">
+          <h2 className="text-3xl font-extrabold text-gray-900" >
             <span className="block">Post Your</span>
             <span className="block text-meme-blue">Believe project needs</span>
           </h2>
@@ -80,26 +63,6 @@ export default function NewProject() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-2xl shadow-meme">
-        <div>
-            <label htmlFor="twitter" className="block text-sm font-medium text-gray-700">
-              Your Twitter Handle
-            </label>
-            <div className="mt-1 relative rounded-xl shadow-sm">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <span className="text-gray-500 sm:text-sm">@</span>
-              </div>
-              <input
-                id="twitter"
-                name="twitter"
-                type="text"
-                value={twitterHandle || form.twitter}
-                onChange={handleChange}
-                className="block w-full pl-7 rounded-xl border-gray-300 focus:border-meme-blue focus:ring-meme-blue sm:text-sm"
-                placeholder="yourhandle"
-                disabled={!!twitterHandle}
-              />
-            </div>
-          </div>
 
           <div>
             <Listbox value={form.tokenAddress} onChange={(value) => setForm({ ...form, tokenAddress: value })}>

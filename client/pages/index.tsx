@@ -17,8 +17,10 @@ export default function Home() {
             Connect builders & believers in the tokenized idea economy
           </p>
           <div className="mt-10 flex justify-center space-x-4">
+
             <Link 
               href="/projects/new" 
+              
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-white bg-meme-blue hover:bg-meme-blue-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-meme-blue transition-all duration-200"
             >
               Post Your Believe project needs
