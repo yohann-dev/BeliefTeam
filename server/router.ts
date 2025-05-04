@@ -21,7 +21,7 @@ const oauth = new OAuth({
     consumer: { key: twitterConfig.consumerKey, secret: twitterConfig.consumerSecret },
     signature_method: "HMAC-SHA1",
     hash_function(base_string, key) {
-      return crypto.createHmac("sha1", key).update(base_string).digest("base64");
+        return crypto.createHmac("sha1", key).update(base_string).digest("base64");
     },
 });
 
@@ -37,14 +37,14 @@ router.get("/api/twitter/login", async (req, res) => {
             method: "POST",
             data: { oauth_callback: twitterConfig.callbackUrl },
         };
-  
+
         const response = await axios.post(request_data.url, null, {
             headers: oauth.toHeader(oauth.authorize(request_data)) as unknown as Record<string, string>,
         });
-  
+
         const result = new URLSearchParams(response.data);
         const oauth_token = result.get("oauth_token");
-        
+
         if (!oauth_token) {
             throw new Error('Failed to get OAuth token from Twitter');
         }
@@ -52,15 +52,15 @@ router.get("/api/twitter/login", async (req, res) => {
         res.json({ url: `https://api.twitter.com/oauth/authenticate?oauth_token=${oauth_token}` });
     } catch (error: any) {
         console.error('Error getting Twitter auth link:', error.message);
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Failed to get Twitter auth link',
-            details: error.message 
+            details: error.message
         });
     }
 });
-  
-  // Step 2: Handle Twitter callback
-  router.get("/api/twitter/callback", async (req, res) => {
+
+// Step 2: Handle Twitter callback
+router.get("/api/twitter/callback", async (req, res) => {
     try {
         const { oauth_token, oauth_verifier } = req.query;
 
@@ -91,31 +91,31 @@ router.get("/api/twitter/login", async (req, res) => {
         const userOauth = {
             key: access_token,
             secret: access_token_secret,
-          };
-        
-          const verifyRequest = {
+        };
+
+        const verifyRequest = {
             url: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
             method: "GET",
-          };
+        };
 
-          const userResponse = await axios.get(verifyRequest.url, {
+        const userResponse = await axios.get(verifyRequest.url, {
             headers: oauth.toHeader(oauth.authorize(verifyRequest, userOauth)) as unknown as Record<string, string>,
-          });
-        
-          const { name, profile_image_url_https, email } = userResponse.data;
-          res.cookie("twitter_handle", screen_name, { httpOnly: false });
-          res.cookie("twitter_name", name, { httpOnly: false });
-          res.cookie("twitter_avatar", profile_image_url_https, { httpOnly: false });
-          if (email) {
+        });
+
+        const { name, profile_image_url_https, email } = userResponse.data;
+        res.cookie("twitter_handle", screen_name, { httpOnly: false });
+        res.cookie("twitter_name", name, { httpOnly: false });
+        res.cookie("twitter_avatar", profile_image_url_https, { httpOnly: false });
+        if (email) {
             res.cookie("twitter_email", email, { httpOnly: false });
-          }
+        }
 
         res.redirect(`${process.env.FRONTEND_ORIGIN}/projects/new`);
     } catch (error: any) {
         console.error('Error handling Twitter callback:', error.message);
-        res.status(500).json({ 
+        res.status(500).json({
             error: 'Failed to handle Twitter callback',
-            details: error.message 
+            details: error.message
         });
     }
 });
@@ -140,7 +140,7 @@ router.get('/api/twitter/logout', (req, res) => {
         res.clearCookie('twitter_name', { path: '/' });
         res.clearCookie('twitter_avatar', { path: '/' });
         res.clearCookie('twitter_email', { path: '/' });
-        
+
         // Redirect to the frontend home page
         res.json({ message: 'Logged out' });
     } catch (error: any) {
@@ -149,15 +149,24 @@ router.get('/api/twitter/logout', (req, res) => {
     }
 });
 
-router.get('/api/get-believe-tokens', async (req, res) => {
+router.get('/api/getBelieveTokens/', async (req, res) => {
     try {
-      const tokens = await db.collection('tokens').get();
-  
-      return res.json(tokens.docs.map(doc => doc.data()));
+        const { twitterHandle } = req.query;
+        console.log(twitterHandle);
+        let tokens;
+        if (twitterHandle) {
+           //TODO: prevent from injection attack
+            tokens = await db.collection('tokens').where('author', '==', twitterHandle).get() || [];
+        } else {
+            tokens = await db.collection('tokens').get() || [];
+        }
+
+        console.log(tokens.docs.map(doc => doc.data()));
+        return res.json(tokens.docs.map(doc => doc.data()));
     } catch (error: any) {
-      console.error('Error fetching believe tokens:', error.response.data);
-  
-      return res.status(500).json({ error: 'Failed to fetch believe tokens' });
+        console.error('Error fetching believe tokens:', error.response.data);
+
+        return res.status(500).json({ error: 'Failed to fetch believe tokens' });
     }
 });
 
