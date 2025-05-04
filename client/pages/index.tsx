@@ -1,8 +1,12 @@
 import Link from "next/link";
+import Head from 'next/head';
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+      <Head>
+        <link rel="icon" href="/beliefteam_logo.png" />
+      </Head>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center">
           <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">

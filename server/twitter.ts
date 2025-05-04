@@ -15,7 +15,7 @@ export async function fetchBelieveReplies(): Promise<ReplyInfo[]> {
   });
 
   // First, get the user ID for launchacoin
-  const user = await client.v2.userByUsername('launchacoin');
+  const user = await client.v2.userByUsername('launchcoin');
   
   // Search for replies to launchacoin
   const searchResults = await client.v2.search({
