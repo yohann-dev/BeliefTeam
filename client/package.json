@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc",
+    "scrape-believe": "ts-node scripts/scrape-believe.ts"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.2",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "next": "latest",
+    "next-auth": "^4.24.11",
+    "node-fetch": "^3.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "twitter-api-v2": "^1.22.0"
+  },
+  "devDependencies": {
+    "@types/next-auth": "^3.13.0",
+    "@types/node": "^12.12.21",
+    "@types/node-fetch": "^2.6.12",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.1",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5"
+  }
+}
