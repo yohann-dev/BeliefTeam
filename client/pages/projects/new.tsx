@@ -61,9 +61,9 @@ export default function NewProject() {
           tokensList.length > 0 ? <TokenTeamForm tokensList={tokensList} /> : (
             <div>              
               <div className="text-center text-gray-600 mt-20">
-                <h2 className="text-2xl font-bold">No token(s) found for your account</h2>
+                <h2 className="text-2xl font-bold">No project found for your account</h2>
                 <p className="mt-2 text-sm text-gray-600">
-                  Create a token first and then come back to post your project needs.
+                  Create a project first and then come back to post your needs.
                 </p>
               </div>
             </div>
