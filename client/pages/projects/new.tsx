@@ -5,6 +5,7 @@ import { useTwitterSession } from "../../hooks/useTwitterSession";
 import TwitterButton from '../../components/TwitterButton';
 import TokenTeamForm from "../../components/TokenTeamForm";
 import TwitterConnectionPrompt from "../../components/TwitterConnectionPrompt";
+import AnimatedBackground from "../../components/AnimatedBackground";
 
 export default function NewProject() {
   const { twitterHandle, twitterName } = useTwitterSession();
@@ -27,8 +28,9 @@ export default function NewProject() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
-      <TwitterButton />
+    <AnimatedBackground>
+      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+        <TwitterButton />
 
       <BackButton />
 
@@ -70,5 +72,6 @@ export default function NewProject() {
 
       </div>
     </div>
+    </AnimatedBackground>
   );
 }
