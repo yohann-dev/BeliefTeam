@@ -11,6 +11,11 @@ export type Token = {
     needs?: string[];
     tweetLink?: string;
     contactEmail?: string;
+    marketData?: {
+        marketCap: number;
+        price: number;
+        holderCount: number;
+    }
 };
 
 export async function getTokens(): Promise<Token[]> {

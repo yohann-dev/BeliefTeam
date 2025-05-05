@@ -19,12 +19,6 @@ export default function Projects() {
     );
   }, [tokens, searchQuery]);
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-meme-blue"></div>
-    </div>
-  );
-
   const hasAdditionalInfo = (token: Token) => {
     return Boolean(
       token.description ||
@@ -69,7 +63,12 @@ export default function Projects() {
             </div>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          { loading ? (
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-meme-blue"></div>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredTokens.map(token => (
               <div key={token.tokenAddress} className="bg-white rounded-2xl shadow-meme p-6 transform transition-all hover:scale-105 hover:shadow-lg h-[240px] flex flex-col">
                 <div className="flex items-center justify-between mb-4">
@@ -85,7 +84,7 @@ export default function Projects() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                     <span className="truncate">
-                      Created by {' '}
+                      Launched by {' '}
                       <a
                         href={`https://x.com/${token.author}`}
                         target="_blank"
@@ -102,7 +101,27 @@ export default function Projects() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span className="truncate">CA: {token.tokenAddress}</span>
+                    <button
+                      onClick={() => navigator.clipboard.writeText(token.tokenAddress)}
+                      className="ml-2 text-meme-blue hover:text-meme-blue-dark"
+                      title="Copy to clipboard"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                      </svg>
+                    </button>
                   </div>
+
+                  {token.marketData && (
+                    <div className="flex items-center text-sm text-gray-500">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="truncate">
+                        Price: ${token.marketData.price} | Market Cap: ${token.marketData.marketCap} | Holders: {token.marketData.holderCount}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {hasAdditionalInfo(token) && (
@@ -111,13 +130,14 @@ export default function Projects() {
                       onClick={() => setSelectedToken(token)}
                       className="w-full px-4 py-2 text-sm font-medium text-meme-blue hover:text-meme-blue-dark hover:bg-meme-blue hover:bg-opacity-5 rounded-xl transition-colors"
                     >
-                      View Details
+                      View Project Details
                     </button>
                   </div>
                 )}
               </div>
             ))}
           </div>
+          )}
         </div>
 
         {/* Token Details Modal */}

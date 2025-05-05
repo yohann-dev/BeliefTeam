@@ -14,10 +14,10 @@ export async function fetchBelieveReplies(): Promise<ReplyInfo[]> {
     accessSecret: process.env.TWITTER_ACCESS_SECRET!,
   });
 
-  // First, get the user ID for launchacoin
+  // First, get the user ID for launchcoin
   const user = await client.v2.userByUsername('launchcoin');
   
-  // Search for replies to launchacoin
+  // Search for replies to launchcoin
   const searchResults = await client.v2.search({
     query: `to:${user.data.id}`,
     'tweet.fields': ['created_at', 'entities', 'text'],

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { db } from '../config/firebase';
+import { marketController } from './marketController';
 
 export const believeTokensController = {
     async getBelieveTokens(req: Request, res: Response) {
@@ -14,7 +15,11 @@ export const believeTokensController = {
                 tokens = await db.collection('tokens').get() || [];
             }
 
-            return res.json(tokens.docs.map(doc => doc.data()));
+            const tokensMarketData = await marketController.getBelieveMarketData();
+            return res.json(tokens.docs.map(doc => ({
+                ...doc.data(),
+                marketData: tokensMarketData.get(doc.data().tokenAddress)
+            })));
         } catch (error: any) {
             console.error('Error fetching believe tokens:', error);
             return res.status(500).json({ error: 'Failed to fetch believe tokens' });
@@ -32,9 +37,9 @@ export const believeTokensController = {
 
             if (!isExist.docs.length) return res.status(404).json({ error: 'Token not found' });
 
-            // TODO: remove comment
-            // if (twitter_handle !== twitterHandle || isExist.docs[0].data().author !== twitter_handle) return res.status(401).json({ error: 'Unauthorized' });
+            if (twitter_handle !== twitterHandle || isExist.docs[0].data().author !== twitter_handle) return res.status(401).json({ error: 'Unauthorized' });
         
+            // TODO: prevent from injection attack
             await db.collection('tokens').doc(isExist.docs[0].id).update({
                 needs,
                 extraInfo,

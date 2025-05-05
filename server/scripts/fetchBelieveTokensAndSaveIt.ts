@@ -2,9 +2,9 @@ import 'dotenv/config';
 import { Scraper, SearchMode } from "agent-twitter-client";
 import { db } from '../firebase.ts';
 
-const getTweetRepliesFromLaunchacoins = async () => {
+const getTweetRepliesFromlaunchcoins = async () => {
     const scraper = new Scraper();
-    const username = 'launchacoin';
+    const username = 'launchcoin';
     const tokensData: any[] = [];
     
     await scraper.login(
@@ -66,11 +66,9 @@ const saveTokensToFirebase = async (tokensData: any) => {
 };
 
 const fetchBelieveTokensAndSaveIt = async () => {
-    const tokensDataFromLaunchacoins = await getTweetRepliesFromLaunchacoins();
+    const tokensDataFromlaunchcoins = await getTweetRepliesFromlaunchcoins();
 
-    // const tokensWithMarketData = await getTokensWithMarketDataFromAPI(tokensList); // TODO: Implement this
-
-    await saveTokensToFirebase(tokensDataFromLaunchacoins);
+    await saveTokensToFirebase(tokensDataFromlaunchcoins);
 };
 
 fetchBelieveTokensAndSaveIt();
