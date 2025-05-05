@@ -23,9 +23,9 @@ export const marketController = {
 
         data.aboutToGraduate.pools.forEach((pool: any) => {
             mapData.set(pool.id, {
-                price: pool.baseAsset.usdPrice.toFixed(2),
+                price: pool.baseAsset.usdPrice?.toFixed(2),
                 holderCount: pool.baseAsset.holderCount,
-                marketCap: pool.baseAsset.mcap.toFixed(0),
+                marketCap: pool.baseAsset.mcap?.toFixed(0),
             });
         });
 

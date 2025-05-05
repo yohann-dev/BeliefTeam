@@ -74,7 +74,9 @@ export default function Projects() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-gray-900">{token.coinName}</h3>
                   <span className="px-3 py-1 text-sm font-semibold text-meme-blue bg-meme-blue bg-opacity-10 rounded-full">
-                    ${token.tokenSymbol}
+                    <a href={"https://believe.app/coin/" + token.tokenAddress} target="_blank" rel="noopener noreferrer">
+                      ${token.tokenSymbol}
+                    </a>
                   </span>
                 </div>
 
