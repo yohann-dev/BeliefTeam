@@ -30,8 +30,8 @@ export default function NewProject() {
 
 
   return (
-    <AnimatedBackground>
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+        <AnimatedBackground>
         <TwitterButton />
 
       <BackButton />
@@ -74,7 +74,7 @@ export default function NewProject() {
         )}
 
       </div>
-    </div>
     </AnimatedBackground>
+    </div>
   );
 }
