@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Token } from "../pages/api/tokens/tokens.api";
-import { useTwitterSession } from "../hooks/useTwitterSession";
 import axios from "axios";
 import { FormData, TokenFormProps } from "../types/form";
 import TokenSelector from "./TokenSelector";
@@ -9,10 +8,11 @@ import FormModals from "./FormModals";
 
 interface TokenTeamFormProps {
     tokensList: Token[];
+    twitterHandle: string;
+    twitterEmail: string;
 }
 
-export default function TokenTeamForm({ tokensList }: TokenTeamFormProps) {
-    const { twitterHandle, twitterEmail } = useTwitterSession();
+export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail }: TokenTeamFormProps) {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [submitAttempted, setSubmitAttempted] = useState(false);
@@ -24,6 +24,7 @@ export default function TokenTeamForm({ tokensList }: TokenTeamFormProps) {
         extraInfo: "",
         contactEmail: twitterEmail || ""
     });
+
 
     const handleTokenChange = (value: string) => {
         const selectedToken = tokensList.find((token: Token) => token.tokenAddress === value);
@@ -84,23 +85,24 @@ export default function TokenTeamForm({ tokensList }: TokenTeamFormProps) {
     return (
         <>
             <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-2xl shadow-meme">
+
+                <TokenSelector {...formProps} />
+
                 <div>
                     <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700">
-                        Email Address <span className="text-red-500">*</span>
+                        Contact Email <span className="text-red-500">*</span>
                     </label>
                     <input
                         id="contactEmail"
                         name="contactEmail"
                         type="email"
-                        value={twitterEmail || form.contactEmail}
+                        value={form.contactEmail || twitterEmail}
                         onChange={(e) => handleFormChange('contactEmail', e.target.value)}
-                        className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm"
+                        className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2"
                         placeholder="your@email.com"
                         required
                     />
                 </div>
-
-                <TokenSelector {...formProps} />
 
                 <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
