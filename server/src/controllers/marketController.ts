@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 
 let cachedMarketData: any = null;
 let cacheTimestamp: number = 0;
