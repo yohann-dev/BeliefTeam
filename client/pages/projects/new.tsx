@@ -13,18 +13,20 @@ export default function NewProject() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadTokens = async () => {
-      try {
-        const tokensListData = await getTokensByTwitterHandle(twitterHandle);
-        setTokensList(tokensListData);
-      } catch (error) {
-        console.error('Error fetching tokens:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    loadTokens();
-  }, []);
+    if (twitterHandle) {
+      const loadTokens = async () => {
+        try {
+          const tokensListData = await getTokensByTwitterHandle(twitterHandle);
+          setTokensList(tokensListData);
+        } catch (error) {
+          console.error('Error fetching tokens:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      loadTokens();
+    }
+  }, [twitterHandle]);
 
 
   return (
@@ -45,9 +47,9 @@ export default function NewProject() {
           </p>
         </div>
 
-        {!twitterHandle ? (
+        {!twitterHandle && !isLoading ? (
           <TwitterConnectionPrompt />
-        ) :isLoading ? (
+        ) : isLoading ? (
           <div className="text-center text-gray-600">
             <svg className="animate-spin h-10 w-10 text-meme-blue mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -58,7 +60,8 @@ export default function NewProject() {
             </p>
           </div>
         ) : (
-          tokensList.length > 0 ? <TokenTeamForm tokensList={tokensList} /> : (
+          tokensList.length > 0 ? <TokenTeamForm tokensList={tokensList} />
+          : (
             <div>              
               <div className="text-center text-gray-600 mt-20">
                 <h2 className="text-2xl font-bold">No project found for your account</h2>
