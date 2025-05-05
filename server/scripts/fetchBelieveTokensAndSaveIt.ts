@@ -29,7 +29,7 @@ const getTweetRepliesFromlaunchcoins = async () => {
 };
 
 const getTokenData = (tweetReply: any) => {
-    const tokenAddress = tweetReply.urls[0].split('/').pop();
+    const tokenAddress = tweetReply.urls[0]?.split('/')?.pop();
     
     // Extract author (remove @)
     const author = tweetReply.text.match(/@(\w+)/)?.[1] || '';
@@ -68,7 +68,7 @@ const saveTokensToFirebase = async (tokensData: any) => {
 const fetchBelieveTokensAndSaveIt = async () => {
     const tokensDataFromlaunchcoins = await getTweetRepliesFromlaunchcoins();
 
-    await saveTokensToFirebase(tokensDataFromlaunchcoins);
+    // await saveTokensToFirebase(tokensDataFromlaunchcoins);
 };
 
 fetchBelieveTokensAndSaveIt();
