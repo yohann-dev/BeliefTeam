@@ -83,10 +83,11 @@ export const twitterController = {
             // Set cookies with proper settings
             const cookieOptions = {
                 httpOnly: false,  // Allow JavaScript access
-                secure: env.NODE_ENV === 'production',  // Only require HTTPS in production
-                sameSite: 'lax' as const,
+                secure: env.NODE_ENV === 'production',  // Always true in production
+                sameSite: 'none' as const,  // Allow cross-site cookies
                 path: '/',
                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+                domain: '.beliefteam.fun'  // Allow cookies for all subdomains
             };
 
             console.log('Environment:', env.NODE_ENV);
