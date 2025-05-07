@@ -83,12 +83,13 @@ export const twitterController = {
             // Set cookies with proper settings
             const cookieOptions = {
                 httpOnly: false,  // Allow JavaScript access
-                secure: env.NODE_ENV === 'production',
+                secure: env.NODE_ENV === 'production',  // Only require HTTPS in production
                 sameSite: 'lax' as const,
                 path: '/',
                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
             };
 
+            console.log('Environment:', env.NODE_ENV);
             console.log('Setting cookies with options:', cookieOptions);
 
             res.cookie("twitter_handle", screen_name, cookieOptions);
