@@ -86,7 +86,8 @@ export const twitterController = {
                 secure: env.NODE_ENV === 'production',
                 sameSite: 'lax' as const,
                 path: '/',
-                maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days,
+                domain: env.FRONTEND_ORIGIN
             };
 
             console.log('New cookies:', {
