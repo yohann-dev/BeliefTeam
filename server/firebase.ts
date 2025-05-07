@@ -1,10 +1,6 @@
 import admin from 'firebase-admin';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
-const serviceAccount = JSON.parse(
-  readFileSync(join(process.cwd(), './firebase-beliefteam.json'), 'utf-8')
-);
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT!);
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
