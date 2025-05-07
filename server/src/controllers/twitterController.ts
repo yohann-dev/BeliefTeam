@@ -90,8 +90,6 @@ export const twitterController = {
                 domain: env.NODE_ENV === 'production' ? 'beliefteam-server-production.up.railway.app' : undefined
             };
 
-            console.log('Environment:', env.NODE_ENV);
-            console.log('Setting cookies with options:', cookieOptions);
 
             res.cookie("twitter_handle", screen_name, cookieOptions);
             res.cookie("twitter_name", name, cookieOptions);
@@ -99,6 +97,13 @@ export const twitterController = {
             if (email) {
                 res.cookie("twitter_email", email, cookieOptions);
             }
+
+            console.log('New Cookies set:', {
+                twitter_handle: screen_name,
+                twitter_name: name,
+                twitter_avatar: profile_image_url_https,
+                twitter_email: email
+            });
 
             // Redirect with a success message
             res.redirect(`${env.FRONTEND_ORIGIN}/projects/new?login=success`);
@@ -110,7 +115,6 @@ export const twitterController = {
 
     async getSession(req: Request, res: Response) {
         try {
-            console.log('Getting session, cookies:', req.cookies);
             const twitter_handle = req.cookies?.twitter_handle;
             const twitter_name = req.cookies?.twitter_name;
             const twitter_avatar = req.cookies?.twitter_avatar;

@@ -10,7 +10,7 @@ const app = express();
 // Middleware
 const corsOptions = {
     origin: env.NODE_ENV === 'production' 
-        ? 'https://beliefteam.fun'
+        ? env.FRONTEND_ORIGIN
         : true,  // Allow all origins in development
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -20,19 +20,8 @@ const corsOptions = {
     optionsSuccessStatus: 204
 };
 
-console.log('CORS options:', corsOptions);
 app.use(cors(corsOptions));
-
-// Cookie parser middleware
 app.use(cookieParser());
-
-// Debug middleware to log cookies and headers
-app.use((req, res, next) => {
-    console.log('Cookies received:', req.cookies);
-    console.log('Request origin:', req.headers.origin);
-    next();
-});
-
 app.use(express.json());
 
 // Routes
