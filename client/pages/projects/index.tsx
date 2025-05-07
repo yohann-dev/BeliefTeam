@@ -12,6 +12,8 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [showOnlyWithDetails, setShowOnlyWithDetails] = useState(false);
+  const [sortBy, setSortBy] = useState<'marketCap' | 'holders'>('marketCap');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   const hasAdditionalInfo = (token: Token) => {
     return Boolean(
@@ -21,6 +23,15 @@ export default function Projects() {
       token.extraInfo ||
       token.contactEmail
     );
+  };
+
+  const handleSort = (column: 'marketCap' | 'holders') => {
+    if (sortBy === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(column);
+      setSortDirection('desc');
+    }
   };
 
   const filteredTokens = useMemo(() => {
@@ -41,13 +52,19 @@ export default function Projects() {
       filtered = filtered.filter(hasAdditionalInfo);
     }
 
-    // Sort by holder count
+    // Sort by selected criteria
     return filtered.sort((a, b) => {
-      const aHolders = a.marketData?.holderCount || 0;
-      const bHolders = b.marketData?.holderCount || 0;
-      return bHolders - aHolders;
+      if (sortBy === 'marketCap') {
+        const aMarketCap = a.marketData?.marketCap || 0;
+        const bMarketCap = b.marketData?.marketCap || 0;
+        return sortDirection === 'asc' ? aMarketCap - bMarketCap : bMarketCap - aMarketCap;
+      } else {
+        const aHolders = a.marketData?.holderCount || 0;
+        const bHolders = b.marketData?.holderCount || 0;
+        return sortDirection === 'asc' ? aHolders - bHolders : bHolders - aHolders;
+      }
     });
-  }, [tokens, searchQuery, showOnlyWithDetails]);
+  }, [tokens, searchQuery, showOnlyWithDetails, sortBy, sortDirection]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
@@ -115,8 +132,40 @@ export default function Projects() {
                       <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[200px] min-w-[200px] max-w-[200px] truncate">Name</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[120px] max-w-[120px] truncate">Author</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[220px] min-w-[220px] max-w-[220px]">Contract Address</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px]">Market Cap</th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px]">Holders</th>
+                      <th 
+                        className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px] cursor-pointer hover:bg-meme-blue-dark transition-colors"
+                        onClick={() => handleSort('marketCap')}
+                      >
+                        <div className="flex items-center justify-center gap-1">
+                          Market Cap
+                          {sortBy === 'marketCap' && (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              {sortDirection === 'asc' ? (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                              ) : (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              )}
+                            </svg>
+                          )}
+                        </div>
+                      </th>
+                      <th 
+                        className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px] cursor-pointer hover:bg-meme-blue-dark transition-colors"
+                        onClick={() => handleSort('holders')}
+                      >
+                        <div className="flex items-center justify-center gap-1">
+                          Holders
+                          {sortBy === 'holders' && (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              {sortDirection === 'asc' ? (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                              ) : (
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              )}
+                            </svg>
+                          )}
+                        </div>
+                      </th>
                       <th className="px-4 py-3 w-[120px] min-w-[90px]"></th>
                     </tr>
                   </thead>
