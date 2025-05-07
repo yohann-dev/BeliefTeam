@@ -284,14 +284,14 @@ export default function Projects() {
 
                 {selectedToken.tweetLink && (
                   <div>
-                    <h3 className="text-sm font-medium text-meme-blue">Project Tweet</h3>
+                    <h3 className="text-sm font-medium text-meme-blue">Project link</h3>
                     <a
                       href={selectedToken.tweetLink}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="mt-1 text-sm text-meme-blue hover:text-meme-blue-dark transition-colors"
                     >
-                      View on X/Twitter
+                      {selectedToken.tweetLink}
                     </a>
                   </div>
                 )}
