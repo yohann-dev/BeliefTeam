@@ -5,3 +5,4 @@ dist/
 .DS_Store
 service-account.json
 firebase-beliefteam.json
+encode.js

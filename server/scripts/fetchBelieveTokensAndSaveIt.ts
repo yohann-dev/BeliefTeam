@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import { Scraper, SearchMode } from "agent-twitter-client";
-import { db } from '../firebase.ts';
+import { db } from '../firebase';
 
 const getTweetRepliesFromlaunchcoins = async () => {
     const scraper = new Scraper();

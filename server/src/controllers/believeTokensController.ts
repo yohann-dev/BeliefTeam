@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { db } from '../config/firebase';
+import { db } from '../../firebase';
 import { marketController } from './marketController';
 import { env } from '../config/env';
 import { QuerySnapshot, DocumentData } from 'firebase-admin/firestore';
