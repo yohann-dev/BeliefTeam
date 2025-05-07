@@ -18,7 +18,7 @@ export default function TwitterLoginButton() {
     }
 
     return (
-        <div className="absolute top-6 right-6 z-50">
+        <div className="absolute right-2 z-50">
             {twitterHandle ? (
                 <div className="flex items-center space-x-3 bg-white p-2 rounded-xl shadow border border-gray-200">
                     <img src={twitterAvatar || ""} alt="Profile" className="h-8 w-8 rounded-full" />

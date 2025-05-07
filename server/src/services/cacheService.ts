@@ -1,5 +1,3 @@
-import { QuerySnapshot, DocumentData } from 'firebase-admin/firestore';
-
 interface CacheItem<T> {
     data: T;
     timestamp: number;
@@ -7,7 +5,7 @@ interface CacheItem<T> {
 
 export class CacheService {
     private cache: Map<string, CacheItem<any>> = new Map();
-    private readonly DEFAULT_TTL = 5 * 60 * 1000; // 5 minutes in milliseconds
+    private readonly DEFAULT_TTL = 15 * 60 * 1000; // 5 minutes in milliseconds
     private hits = 0;
     private misses = 0;
 

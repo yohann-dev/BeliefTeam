@@ -36,7 +36,7 @@ export default function Projects() {
 
   const filteredTokens = useMemo(() => {
     let filtered = tokens;
-    
+
     // Apply search filter
     if (searchQuery) {
       filtered = filtered.filter(token =>
@@ -96,34 +96,33 @@ export default function Projects() {
             </h1>
           </div>
 
-          <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center">
-            <div className="w-full sm:w-96">
-              <input
-                type="text"
-                placeholder="Search by symbol, name, author, or address..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl border-2 border-meme-blue bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
-              />
-            </div>
-            <button
-              onClick={() => setShowOnlyWithDetails(!showOnlyWithDetails)}
-              className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                showOnlyWithDetails
-                  ? 'bg-meme-blue text-white shadow-meme-glow'
-                  : 'bg-white text-meme-blue border-2 border-meme-blue hover:bg-meme-blue hover:text-white'
-              }`}
-            >
-              {showOnlyWithDetails ? 'Show All Projects' : 'Show Only Projects with Details'}
-            </button>
-          </div>
-
           {loading ? (
             <div className="min-h-screen flex items-center justify-center">
               <div className="animate-spin-slow rounded-full h-12 w-12 border-t-2 border-b-2 border-meme-blue"></div>
             </div>
           ) : (
             <>
+
+              <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center">
+                <div className="w-full sm:w-96">
+                  <input
+                    type="text"
+                    placeholder="Search by symbol, name, author, or address..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 rounded-xl border-2 border-meme-blue bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
+                  />
+                </div>
+                <button
+                  onClick={() => setShowOnlyWithDetails(!showOnlyWithDetails)}
+                  className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${showOnlyWithDetails
+                      ? 'bg-meme-blue text-white shadow-meme-glow'
+                      : 'bg-white text-meme-blue border-2 border-meme-blue hover:bg-meme-blue hover:text-white'
+                    }`}
+                >
+                  {showOnlyWithDetails ? 'Show All Projects' : 'Show Only Projects with Details'}
+                </button>
+              </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 rounded-2xl overflow-hidden shadow-meme bg-white">
                   <thead className="bg-gradient-to-r from-meme-blue to-meme-blue-accent sticky top-0 z-10">
@@ -132,7 +131,7 @@ export default function Projects() {
                       <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[200px] min-w-[200px] max-w-[200px] truncate">Name</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[120px] max-w-[120px] truncate">Author</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[220px] min-w-[220px] max-w-[220px]">Contract Address</th>
-                      <th 
+                      <th
                         className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px] cursor-pointer hover:bg-meme-blue-dark transition-colors"
                         onClick={() => handleSort('marketCap')}
                       >
@@ -149,7 +148,7 @@ export default function Projects() {
                           )}
                         </div>
                       </th>
-                      <th 
+                      <th
                         className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px] cursor-pointer hover:bg-meme-blue-dark transition-colors"
                         onClick={() => handleSort('holders')}
                       >
