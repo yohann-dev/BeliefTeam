@@ -125,7 +125,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
 
                 <div>
                     <label htmlFor="tweetLink" className="block text-sm font-medium text-gray-700">
-                        Project Tweet Link
+                        Project Link
                     </label>
                     <input
                         id="tweetLink"
@@ -137,7 +137,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                         className={`mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2 ${
                             !form.tokenAddress ? 'bg-gray-50 cursor-not-allowed' : ''
                         }`}
-                        placeholder="Optional: https://x.com/..."
+                        placeholder="Optional: https://example.com/..."
                     />
                 </div>
 
