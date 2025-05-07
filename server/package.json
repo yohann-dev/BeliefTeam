@@ -8,7 +8,7 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch-believe-tokens": "ts-node scripts/fetchBelieveTokensAndSaveIt.ts"
+    "fetch-believe-tokens": "ts-node scripts/jobs/fetchNewTokensFromTwitter/fetchBelieveTokensAndSaveIt.ts"
   },
   "keywords": [],
   "author": "",
