@@ -87,7 +87,7 @@ export const twitterController = {
                 sameSite: 'lax' as const,
                 path: '/',
                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days,
-                domain: env.FRONTEND_ORIGIN
+                domain: new URL(env.FRONTEND_ORIGIN).hostname
             };
 
             console.log('New cookies:', {
