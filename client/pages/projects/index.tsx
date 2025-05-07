@@ -182,8 +182,20 @@ export default function Projects() {
                             @{token.author}
                           </a>
                         </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-gray-500 w-[220px] min-w-[220px] max-w-[220px] truncate">
-                          {token.tokenAddress}
+                        <td className="px-4 py-3 whitespace-nowrap text-gray-500 w-[220px] min-w-[220px] max-w-[220px]">
+                          <div className="flex items-center gap-2">
+                            <span className="truncate">{token.tokenAddress}</span>
+                            <button
+                              onClick={() => navigator.clipboard.writeText(token.tokenAddress)}
+                              className="flex-shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full bg-meme-blue text-white hover:bg-meme-blue-dark transition-colors shadow-sm"
+                              aria-label="Copy address"
+                              title="Copy address to clipboard"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                              </svg>
+                            </button>
+                          </div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
                           {token.marketData?.marketCap ? `${formatMarketCap(token.marketData.marketCap)}` : '-'}
