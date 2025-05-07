@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Token } from "../pages/api/tokens/tokens.api";
-import axios from "axios";
+import axiosInstance from "../lib/axios";
 import { FormData, TokenFormProps } from "../types/form";
 import TokenSelector from "./TokenSelector";
 import SkillsSelector from "./SkillsSelector";
@@ -35,7 +35,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
             tweetLink: selectedToken?.tweetLink || "",
             needs: selectedToken?.needs || [],
             extraInfo: selectedToken?.extraInfo || "",
-            contactEmail: selectedToken?.contactEmail || ""
+            contactEmail: selectedToken?.contactEmail || twitterEmail || ""
         }));
     };
 
@@ -65,7 +65,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
         }
 
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/addBelieveTokenNeeds`, data);
+            await axiosInstance.post('/api/addBelieveTokenNeeds', data);
             setShowSuccessModal(true);
         } catch (error) {
             console.error(error);

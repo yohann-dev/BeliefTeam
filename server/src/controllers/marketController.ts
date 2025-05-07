@@ -11,7 +11,7 @@ export const marketController = {
 
         const addDataToMap = (data: any) => {
             data.pools.forEach((pool: any) => {
-                mapData.set(pool.id, {
+                mapData.set(pool.baseAsset.id, {
                     price: pool.baseAsset.usdPrice?.toFixed(2),
                     holderCount: pool.baseAsset.holderCount,
                     marketCap: pool.baseAsset.mcap?.toFixed(0),
@@ -20,8 +20,8 @@ export const marketController = {
         };
 
         addDataToMap(data.recent);
-        addDataToMap(data.graduated);
         addDataToMap(data.aboutToGraduate);
+        addDataToMap(data.graduated);
 
         return mapData;
     },
@@ -55,7 +55,7 @@ export const marketController = {
 
         const filterData = this.getBelieveDataFiltered(believeMarketData.data);
 
-        // Cache the result and timestamp
+        // Caching
         cachedMarketData = filterData;
         cacheTimestamp = now;
 

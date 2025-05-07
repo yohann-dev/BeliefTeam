@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from '../../../lib/axios';
 
 export type Token = {
     author: string;
@@ -19,12 +19,11 @@ export type Token = {
 };
 
 export async function getTokens(): Promise<Token[]> {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBelieveTokens`);
-
+    const response = await axiosInstance.get('/api/getBelieveTokens');
     return response.data;
-};
+}
 
 export async function getTokensByTwitterHandle(twitterHandle: string): Promise<Token[]> {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/getBelieveTokens?twitterHandle=${twitterHandle}`);
+    const response = await axiosInstance.get(`/api/getBelieveTokens?twitterHandle=${twitterHandle}`);
     return response.data;
-};
+}

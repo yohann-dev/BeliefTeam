@@ -10,10 +10,11 @@ import AnimatedBackground from "../../components/AnimatedBackground";
 export default function NewProject() {
   const { twitterHandle, twitterName, twitterEmail } = useTwitterSession();
   const [tokensList, setTokensList] = useState<Token[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (twitterHandle) {
+      setIsLoading(true);
       const loadTokens = async () => {
         try {
           const tokensListData = await getTokensByTwitterHandle(twitterHandle);

@@ -1,19 +1,40 @@
 import { Request, Response } from 'express';
 import { db } from '../config/firebase';
 import { marketController } from './marketController';
+import { env } from '../config/env';
+import { QuerySnapshot, DocumentData } from 'firebase-admin/firestore';
+import { cacheService } from '../services/cacheService';
 
 export const believeTokensController = {
     async getBelieveTokens(req: Request, res: Response) {
         try {
             const { twitterHandle } = req.query;
-            let tokens;
+            let tokens: QuerySnapshot<DocumentData>;
             
+            // Generate cache key based on query
+            const cacheKey = twitterHandle ? `tokens_${twitterHandle}` : 'all_tokens';
+            
+            // Try to get from cache first
+            const cachedTokens = cacheService.get<QuerySnapshot<DocumentData>>(cacheKey);
+            if (cachedTokens) {
+                console.log('Serving tokens from cache');
+                const tokensMarketData = await marketController.getBelieveMarketData();
+                return res.json(cachedTokens.docs.map(doc => ({
+                    ...doc.data(),
+                    marketData: tokensMarketData.get(doc.data().tokenAddress)
+                })));
+            }
+
+            // If not in cache, fetch from database
             if (twitterHandle) {
                 // TODO: prevent from injection attack
                 tokens = await db.collection('tokens').where('author', '==', twitterHandle).get() || [];
             } else {
                 tokens = await db.collection('tokens').get() || [];
             }
+
+            // Store in cache
+            cacheService.set(cacheKey, tokens);
 
             const tokensMarketData = await marketController.getBelieveMarketData();
             return res.json(tokens.docs.map(doc => ({
@@ -48,10 +69,24 @@ export const believeTokensController = {
                 tweetLink,
             });
 
+            // Clear cache after update
+            cacheService.clear();
+
+            res.cookie('cookieName', 'value', {
+                httpOnly: false,  // Set to true if you don't need JS access
+                secure: process.env.NODE_ENV === 'production',  // true in production
+                sameSite: 'lax',  // or 'strict' or 'none'
+                path: '/',
+                domain: new URL(env.FRONTEND_ORIGIN).hostname  // Extract domain from frontend URL
+            });
+
             return res.json({ message: 'Believe token needs added' });
         } catch (error: any) {
             console.error('Error creating believe token:', error);
             return res.status(500).json({ error: 'Failed to add believe token needs' });
         }
     }
-}; 
+};
+
+const stats = cacheService.getStats();
+console.log('Cache hit rate:', stats.hitRate); 

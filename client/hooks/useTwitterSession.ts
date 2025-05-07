@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../lib/axios";
 
 export function useTwitterSession() {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,12 +10,7 @@ export function useTwitterSession() {
 
   const refreshSession = async () => {
     try {
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/twitter/session`, {
-        withCredentials: true,
-        headers: {
-          "Accept": "application/json"
-        }
-      });
+      const { data } = await axiosInstance.get('/api/twitter/session');
       
       setTwitterHandle(data.twitter_handle || null);
       setTwitterName(data.twitter_name || null);

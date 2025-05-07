@@ -4,20 +4,14 @@ import { useState, useMemo } from 'react';
 import { Token } from '../api/tokens/tokens.api';
 import AnimatedBackground from '../../components/AnimatedBackground';
 
+const TOKENS_PER_PAGE = 10;
+
 export default function Projects() {
   const { tokens, loading } = fetchTokens();
   const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredTokens = useMemo(() => {
-    if (!searchQuery) return tokens;
-    return tokens.filter(token =>
-      token.tokenSymbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      token.coinName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      token.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      token.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [tokens, searchQuery]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showOnlyWithDetails, setShowOnlyWithDetails] = useState(false);
 
   const hasAdditionalInfo = (token: Token) => {
     return Boolean(
@@ -29,123 +23,176 @@ export default function Projects() {
     );
   };
 
+  const filteredTokens = useMemo(() => {
+    let filtered = tokens;
+    
+    // Apply search filter
+    if (searchQuery) {
+      filtered = filtered.filter(token =>
+        token.tokenSymbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.coinName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Apply details filter
+    if (showOnlyWithDetails) {
+      filtered = filtered.filter(hasAdditionalInfo);
+    }
+
+    // Sort by holder count
+    return filtered.sort((a, b) => {
+      const aHolders = a.marketData?.holderCount || 0;
+      const bHolders = b.marketData?.holderCount || 0;
+      return bHolders - aHolders;
+    });
+  }, [tokens, searchQuery, showOnlyWithDetails]);
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
+  const paginatedTokens = filteredTokens.slice(
+    (currentPage - 1) * TOKENS_PER_PAGE,
+    currentPage * TOKENS_PER_PAGE
+  );
+
+  const formatMarketCap = (marketCap: number) => {
+    if (marketCap >= 1000000000) {
+      return (marketCap / 1000000000).toFixed(2) + 'B';
+    } else if (marketCap >= 1000000) {
+      return (marketCap / 1000000).toFixed(2) + 'M';
+    } else {
+      return (marketCap / 1000).toFixed(0) + 'K';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b from-white to-meme-blue-muted py-12 px-4 sm:px-6 lg:px-8 relative">
       <AnimatedBackground>
         <BackButton />
+
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-              <span className="block">Believe</span>
-              <span className="block text-meme-blue">Projects</span>
+          <div className="mb-8">
+            <h1 className="text-4xl font-extrabold text-center">
+              <span className="block text-gray-900">Browse</span>
+              <span className="block text-meme-blue animate-pulse-slow">Believe Projects</span>
             </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Discover the latest believe projects and join the movement
-            </p>
           </div>
 
-          {/* Search Bar */}
-
-          <div className="absolute top-10 right-10">
-            <div className="relative">
+          <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <div className="w-full sm:w-96">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search by symbol, name, author, or address..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-3 pl-12 text-gray-700 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent transition-all"
+                className="w-full px-4 py-2 rounded-xl border-2 border-meme-blue bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
               />
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </div>
             </div>
+            <button
+              onClick={() => setShowOnlyWithDetails(!showOnlyWithDetails)}
+              className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
+                showOnlyWithDetails
+                  ? 'bg-meme-blue text-white shadow-meme-glow'
+                  : 'bg-white text-meme-blue border-2 border-meme-blue hover:bg-meme-blue hover:text-white'
+              }`}
+            >
+              {showOnlyWithDetails ? 'Show All Projects' : 'Show Only Projects with Details'}
+            </button>
           </div>
 
-          { loading ? (
+          {loading ? (
             <div className="min-h-screen flex items-center justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-meme-blue"></div>
+              <div className="animate-spin-slow rounded-full h-12 w-12 border-t-2 border-b-2 border-meme-blue"></div>
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredTokens.map(token => (
-              <div key={token.tokenAddress} className="bg-white rounded-2xl shadow-meme p-6 transform transition-all hover:scale-105 hover:shadow-lg h-[240px] flex flex-col">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-gray-900">{token.coinName}</h3>
-                  <span className="px-3 py-1 text-sm font-semibold text-meme-blue bg-meme-blue bg-opacity-10 rounded-full">
-                    <a href={"https://believe.app/coin/" + token.tokenAddress} target="_blank" rel="noopener noreferrer">
-                      ${token.tokenSymbol}
-                    </a>
-                  </span>
-                </div>
-
-                <div className="space-y-3 flex-grow">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <span className="truncate">
-                      Launched by {' '}
-                      <a
-                        href={`https://x.com/${token.author}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-meme-blue hover:text-meme-blue-dark"
-                      >
-                        @{token.author}
-                      </a>
-                    </span>
-                  </div>
-
-                  <div className="flex items-center text-sm text-gray-500">
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="truncate">CA: {token.tokenAddress}</span>
-                    <button
-                      onClick={() => navigator.clipboard.writeText(token.tokenAddress)}
-                      className="ml-2 text-meme-blue hover:text-meme-blue-dark"
-                      title="Copy to clipboard"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                      </svg>
-                    </button>
-                  </div>
-
-                  {token.marketData && (
-                    <div className="flex items-center text-sm text-gray-500">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span className="truncate">
-                        Price: ${token.marketData.price} | Market Cap: ${token.marketData.marketCap} | Holders: {token.marketData.holderCount}
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                {hasAdditionalInfo(token) && (
-                  <div className="mt-auto pt-4 border-t border-gray-100">
-                    <button
-                      onClick={() => setSelectedToken(token)}
-                      className="w-full px-4 py-2 text-sm font-medium text-meme-blue hover:text-meme-blue-dark hover:bg-meme-blue hover:bg-opacity-5 rounded-xl transition-colors"
-                    >
-                      View Project Details
-                    </button>
-                  </div>
-                )}
+            <>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200 rounded-2xl overflow-hidden shadow-meme bg-white">
+                  <thead className="bg-gradient-to-r from-meme-blue to-meme-blue-accent sticky top-0 z-10">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[150px] min-w-[150px]">Symbol</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[200px] min-w-[200px] max-w-[200px] truncate">Name</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[120px] max-w-[120px] truncate">Author</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-white uppercase tracking-wider w-[220px] min-w-[220px] max-w-[220px]">Contract Address</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px]">Market Cap</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px]">Holders</th>
+                      <th className="px-4 py-3 w-[120px] min-w-[90px]"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-100">
+                    {paginatedTokens.map((token, idx) => (
+                      <tr key={token.tokenAddress} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-meme-blue-muted'} hover:bg-meme-blue-muted/50 transition-colors`}>
+                        <td className="px-4 py-3 whitespace-nowrap font-semibold text-meme-blue w-[150px] min-w-[150px]">
+                          <a href={`https://believe.app/coin/${token.tokenAddress}`} target="_blank" rel="noopener noreferrer" className="hover:text-meme-blue-dark transition-colors">
+                            {token.tokenSymbol && `$${token.tokenSymbol} `}
+                          </a>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-gray-900 w-[200px] min-w-[200px] truncate max-w-[200px]">{token.coinName}</td>
+                        <td className="px-4 py-3 whitespace-nowrap text-meme-blue w-[120px] min-w-[120px] max-w-[120px] truncate">
+                          <a href={`https://x.com/${token.author}`} target="_blank" rel="noopener noreferrer" className="hover:text-meme-blue-dark transition-colors">
+                            @{token.author}
+                          </a>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-gray-500 w-[220px] min-w-[220px] max-w-[220px] truncate">
+                          {token.tokenAddress}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
+                          {token.marketData?.marketCap ? `${formatMarketCap(token.marketData.marketCap)}` : '-'}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
+                          {token.marketData?.holderCount?.toLocaleString() || '-'}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap w-[120px] min-w-[90px]">
+                          {hasAdditionalInfo(token) && (
+                            <button
+                              onClick={() => setSelectedToken(token)}
+                              className="px-3 py-1 rounded-xl bg-gradient-to-r from-meme-blue to-meme-blue-accent text-white text-xs font-semibold hover:shadow-meme-glow transition-all duration-300"
+                            >
+                              View Details
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            ))}
-          </div>
+
+              {/* Pagination Controls */}
+              <div className="flex justify-center items-center gap-4 mt-6">
+                <button
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-xl bg-white text-meme-blue border-2 border-meme-blue font-semibold hover:bg-meme-blue hover:text-white transition-colors disabled:opacity-50"
+                  aria-label="Previous page"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <span className="text-meme-blue font-medium">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-xl bg-white text-meme-blue border-2 border-meme-blue font-semibold hover:bg-meme-blue hover:text-white transition-colors disabled:opacity-50"
+                  aria-label="Next page"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </>
           )}
         </div>
 
         {/* Token Details Modal */}
         {selectedToken && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-meme-glow">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">{selectedToken.coinName}</h2>
@@ -153,7 +200,7 @@ export default function Projects() {
                 </div>
                 <button
                   onClick={() => setSelectedToken(null)}
-                  className="text-gray-400 hover:text-gray-500"
+                  className="text-gray-400 hover:text-meme-blue transition-colors"
                 >
                   <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -163,23 +210,23 @@ export default function Projects() {
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-500">Contract Address</h3>
+                  <h3 className="text-sm font-medium text-meme-blue">Contract Address</h3>
                   <p className="mt-1 text-sm text-gray-900">{selectedToken.tokenAddress}</p>
                 </div>
 
                 {selectedToken.description && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Description</h3>
+                    <h3 className="text-sm font-medium text-meme-blue">Description</h3>
                     <p className="mt-1 text-sm text-gray-900">{selectedToken.description}</p>
                   </div>
                 )}
 
                 {selectedToken.needs && selectedToken.needs.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Project Needs</h3>
+                    <h3 className="text-sm font-medium text-meme-blue">Project Needs</h3>
                     <div className="mt-2 flex flex-wrap gap-2">
                       {selectedToken.needs.map((need, index) => (
-                        <span key={index} className="px-3 py-1 text-sm font-medium text-meme-blue bg-meme-blue bg-opacity-10 rounded-full">
+                        <span key={index} className="px-3 py-1 text-sm font-medium text-meme-blue bg-meme-blue-muted rounded-full border border-meme-blue">
                           {need}
                         </span>
                       ))}
@@ -189,12 +236,12 @@ export default function Projects() {
 
                 {selectedToken.tweetLink && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Project Tweet</h3>
+                    <h3 className="text-sm font-medium text-meme-blue">Project Tweet</h3>
                     <a
                       href={selectedToken.tweetLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 text-sm text-meme-blue hover:text-meme-blue-dark"
+                      className="mt-1 text-sm text-meme-blue hover:text-meme-blue-dark transition-colors"
                     >
                       View on X/Twitter
                     </a>
@@ -203,10 +250,10 @@ export default function Projects() {
 
                 {selectedToken.contactEmail && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Contact Email</h3>
+                    <h3 className="text-sm font-medium text-meme-blue">Contact Email</h3>
                     <a
                       href={`mailto:${selectedToken.contactEmail}`}
-                      className="mt-1 text-sm text-meme-blue hover:text-meme-blue-dark"
+                      className="mt-1 text-sm text-meme-blue hover:text-meme-blue-dark transition-colors"
                     >
                       {selectedToken.contactEmail}
                     </a>
@@ -215,7 +262,7 @@ export default function Projects() {
 
                 {selectedToken.extraInfo && (
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500">Additional Information</h3>
+                    <h3 className="text-sm font-medium text-meme-blue">Additional Information</h3>
                     <p className="mt-1 text-sm text-gray-900">{selectedToken.extraInfo}</p>
                   </div>
                 )}

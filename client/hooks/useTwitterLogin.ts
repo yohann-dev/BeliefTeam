@@ -1,15 +1,13 @@
 import router from "next/router";
 import { useState } from "react";
-import axios from "axios";
+import axiosInstance from "../lib/axios";
 
 export const useTwitterLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const login = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/twitter/login`, {
-        withCredentials: true
-      });
+      const { data } = await axiosInstance.get('/api/twitter/login');
       window.location.href = data.url;
     } catch (error) {
       console.error('Error during login:', error);
@@ -24,9 +22,7 @@ export const useTwitterLogout = () => {
   const logout = async () => {
     try {
       setIsLoading(true);
-      await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/twitter/logout`, {
-        withCredentials: true
-      });
+      await axiosInstance.get('/api/twitter/logout');
       
       document.cookie.split(";").forEach(function(c) { 
         document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
