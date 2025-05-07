@@ -82,19 +82,14 @@ export const twitterController = {
 
             // Set cookies with proper settings
             const cookieOptions = {
-                httpOnly: env.NODE_ENV === 'production',
+                httpOnly: false,  // Allow JavaScript access
                 secure: env.NODE_ENV === 'production',
                 sameSite: 'lax' as const,
                 path: '/',
-                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days,
-                domain: new URL(env.FRONTEND_ORIGIN).hostname
+                maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
             };
 
-            console.log('New cookies:', {
-                twitter_handle: screen_name,
-                twitter_name: name,
-                twitter_email: email
-            });
+            console.log('Setting cookies with options:', cookieOptions);
 
             res.cookie("twitter_handle", screen_name, cookieOptions);
             res.cookie("twitter_name", name, cookieOptions);
@@ -113,6 +108,7 @@ export const twitterController = {
 
     async getSession(req: Request, res: Response) {
         try {
+            console.log('Getting session, cookies:', req.cookies);
             const twitter_handle = req.cookies?.twitter_handle;
             const twitter_name = req.cookies?.twitter_name;
             const twitter_avatar = req.cookies?.twitter_avatar;
@@ -144,14 +140,21 @@ export const twitterController = {
 
     async logout(req: Request, res: Response) {
         try {
-            res.clearCookie('twitter_handle', { path: '/' });
-            res.clearCookie('twitter_name', { path: '/' });
-            res.clearCookie('twitter_avatar', { path: '/' });
-            res.clearCookie('twitter_email', { path: '/' });
+            const cookieOptions = {
+                path: '/',
+                httpOnly: false,
+                secure: env.NODE_ENV === 'production',
+                sameSite: 'lax' as const
+            };
+
+            res.clearCookie('twitter_handle', cookieOptions);
+            res.clearCookie('twitter_name', cookieOptions);
+            res.clearCookie('twitter_avatar', cookieOptions);
+            res.clearCookie('twitter_email', cookieOptions);
             res.json({ message: 'Logged out' });
         } catch (error: any) {
             console.error('Error during logout:', error.message);
             res.status(500).json({ error: 'Failed to logout' });
         }
     }
-}; 
+};

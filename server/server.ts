@@ -12,9 +12,13 @@ app.use(cors({
     origin: env.FRONTEND_ORIGIN,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: ['Set-Cookie']
 }));
+
+// Cookie parser middleware
 app.use(cookieParser());
+
 app.use(express.json());
 
 // Routes
