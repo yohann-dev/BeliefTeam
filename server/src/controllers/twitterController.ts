@@ -89,6 +89,12 @@ export const twitterController = {
                 maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
             };
 
+            console.log('New cookies:', {
+                twitter_handle: screen_name,
+                twitter_name: name,
+                twitter_email: email
+            });
+
             res.cookie("twitter_handle", screen_name, cookieOptions);
             res.cookie("twitter_name", name, cookieOptions);
             res.cookie("twitter_avatar", profile_image_url_https, cookieOptions);
