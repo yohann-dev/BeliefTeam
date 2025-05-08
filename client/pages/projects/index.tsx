@@ -110,14 +110,14 @@ export default function Projects() {
                     placeholder="Search by symbol, name, author, or address..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 py-2 rounded-xl border-2 border-meme-blue bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
+                    className="w-full px-4 py-2 rounded-xl border border-meme-blue bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
                   />
                 </div>
                 <button
                   onClick={() => setShowOnlyWithDetails(!showOnlyWithDetails)}
                   className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${showOnlyWithDetails
                       ? 'bg-meme-blue text-white shadow-meme-glow'
-                      : 'bg-white text-meme-blue border-2 border-meme-blue hover:bg-meme-blue hover:text-white'
+                      : 'bg-white text-meme-blue border border-meme-blue hover:bg-meme-blue hover:text-white'
                     }`}
                 >
                   {showOnlyWithDetails ? 'Show All Projects' : 'Show Only Projects with Details'}
