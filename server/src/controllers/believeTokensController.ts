@@ -5,6 +5,8 @@ import { env } from '../config/env';
 import { QuerySnapshot, DocumentData } from 'firebase-admin/firestore';
 import { cacheService } from '../services/cacheService';
 
+const DB_TOKEN_COLLECTION = env.NODE_ENV === 'production' ? 'tokens' : 'tokens_dev';
+
 export const believeTokensController = {
     async getBelieveTokens(req: Request, res: Response) {
         try {
@@ -28,9 +30,9 @@ export const believeTokensController = {
             // If not in cache, fetch from database
             if (twitterHandle) {
                 // TODO: prevent from injection attack
-                tokens = await db.collection('tokens').where('author', '==', twitterHandle).get() || [];
+                tokens = await db.collection(DB_TOKEN_COLLECTION).where('author', '==', twitterHandle).get() || [];
             } else {
-                tokens = await db.collection('tokens').get() || [];
+                tokens = await db.collection(DB_TOKEN_COLLECTION).get() || [];
             }
 
             // Store in cache
@@ -52,7 +54,7 @@ export const believeTokensController = {
             const twitter_handle = req.cookies.twitter_handle;
             const { tokenAddress, tweetLink, twitterHandle, description, needs, extraInfo, contactEmail } = req.body;
 
-            const isExist = await db.collection('tokens')
+            const isExist = await db.collection(DB_TOKEN_COLLECTION)
                 .where('tokenAddress', '==', tokenAddress)
                 .get();
 
@@ -60,8 +62,7 @@ export const believeTokensController = {
 
             if (twitter_handle !== twitterHandle || isExist.docs[0].data().author !== twitter_handle) return res.status(401).json({ error: 'Unauthorized' });
         
-            // TODO: prevent from injection attack
-            await db.collection('tokens').doc(isExist.docs[0].id).update({
+            await db.collection(DB_TOKEN_COLLECTION).doc(isExist.docs[0].id).update({
                 needs,
                 extraInfo,
                 contactEmail,
