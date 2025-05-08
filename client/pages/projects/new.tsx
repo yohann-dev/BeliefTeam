@@ -5,7 +5,6 @@ import { useTwitterSession } from "../../hooks/useTwitterSession";
 import TwitterButton from '../../components/TwitterButton';
 import TokenTeamForm from "../../components/TokenTeamForm";
 import TwitterConnectionPrompt from "../../components/TwitterConnectionPrompt";
-import AnimatedBackground from "../../components/AnimatedBackground";
 
 export default function NewProject() {
   const { twitterHandle, twitterName, twitterEmail } = useTwitterSession();
@@ -29,13 +28,13 @@ export default function NewProject() {
     }
   }, [twitterHandle]);
 
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
-      <AnimatedBackground>
-        <TwitterButton />
-
-        <BackButton />
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <BackButton />
+          <TwitterButton />
+        </div>
 
         <div className="max-w-xl mx-auto">
           <div className="text-center mb-8">
@@ -73,9 +72,8 @@ export default function NewProject() {
                 </div>
               )
           )}
-
         </div>
-      </AnimatedBackground>
+      </div>
     </div>
   );
 }

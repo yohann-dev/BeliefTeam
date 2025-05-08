@@ -5,7 +5,7 @@ import twitterRoutes from './src/routes/twitterRoutes';
 import believeTokensRoutes from './src/routes/believeTokensRoutes';
 import visitsRoutes from './src/routes/visitsRoutes';
 import { env } from './src/config/env';
-
+import solanaRoutes from './src/routes/solanaRoutes';
 const app = express();
 
 // Middleware
@@ -29,6 +29,7 @@ app.use(express.json());
 app.use('/', twitterRoutes);
 app.use('/', believeTokensRoutes);
 app.use('/', visitsRoutes);
+app.use('/', solanaRoutes);
 
 // Start server
 app.listen(env.PORT, () => {

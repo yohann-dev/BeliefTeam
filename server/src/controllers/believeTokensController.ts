@@ -4,8 +4,10 @@ import { marketController } from './marketController';
 import { env } from '../config/env';
 import { QuerySnapshot, DocumentData } from 'firebase-admin/firestore';
 import { cacheService } from '../services/cacheService';
+import admin from 'firebase-admin';
 
 const DB_TOKEN_COLLECTION = env.NODE_ENV === 'production' ? 'tokens' : 'tokens_dev';
+const BOOST_DURATION_DAYS = 3;
 
 export const believeTokensController = {
     async getBelieveTokens(req: Request, res: Response) {
@@ -86,7 +88,54 @@ export const believeTokensController = {
             console.error('Error creating believe token:', error);
             return res.status(500).json({ error: 'Failed to add believe token needs' });
         }
+    },
+
+    async boostToken(req: Request, res: Response) {
+        try {
+            const { tokenId, transactionSignature } = req.body;
+
+            if (!tokenId || !transactionSignature) {
+                return res.status(400).json({ error: 'Token ID and transaction signature are required' });
+            }
+
+            const db = admin.firestore();
+            const tokenRef = db.collection(DB_TOKEN_COLLECTION).doc(tokenId);
+
+            // Calculate boost expiration
+            const now = new Date();
+            const expiresAt = new Date(now.getTime() + BOOST_DURATION_DAYS * 24 * 60 * 60 * 1000);
+
+            // Update token with boost information
+
+
+            await tokenRef.update({
+                isBoosted: true,
+                boostExpiresAt: admin.firestore.Timestamp.fromDate(expiresAt),
+                lastBoostSignature: transactionSignature,
+                lastBoostAt: admin.firestore.FieldValue.serverTimestamp(),
+            });
+
+            return res.status(200).json({ success: true });
+        } catch (error) {
+            console.error('Error recording boost:', error);
+            return res.status(500).json({ error: 'Failed to record boost' });
+        }
+    },
+
+    async getBoostedTokens(req: Request, res: Response) {
+        try {
+            const db = admin.firestore();
+            const tokens = await db.collection(DB_TOKEN_COLLECTION)
+                .where('boostExpiresAt', '>', admin.firestore.Timestamp.now())
+                .get();
+
+            return res.status(200).json(tokens.docs.map(doc => doc.data()));
+        } catch (error) {
+            console.error('Error fetching boosted tokens:', error);
+            return res.status(500).json({ error: 'Failed to fetch boosted tokens' });
+        }
     }
+    
 };
 
 const stats = cacheService.getStats();

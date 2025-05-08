@@ -10,7 +10,7 @@ export const incrementVisit = async (req: Request, res: Response) => {
     if (env.NODE_ENV !== 'production') return res.status(200).send();
 
 
-    const docRef = db.collection('DB_METRICS_COLLECTION').doc('visits');
+    const docRef = db.collection('metrics').doc('visits');
     await docRef.set({ count: admin.firestore.FieldValue.increment(1) }, { merge: true });
     res.status(200).send();
   } catch (err) {
