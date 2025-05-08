@@ -1,10 +1,13 @@
 import Link from "next/link";
 import Head from 'next/head';
 import AnimatedBackground from "../components/AnimatedBackground";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import IdeaGenerationModal from "../components/IdeaGenerationModal";
 
 export default function Home() {
+  const [isIdeaModalOpen, setIsIdeaModalOpen] = useState(false);
+
   useEffect(() => {
     const incrementVisit = async () => {
       try {
@@ -43,22 +46,28 @@ export default function Home() {
             <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-20 md:text-xl md:max-w-3xl animate-bounce">
               Connect builders & believers in the tokenized idea economy
             </p>
-            <div className="mt-20 flex justify-center space-x-4">
+            <div className="mt-20 grid grid-cols-2 gap-4 max-w-3xl mx-auto">
               <Link 
                 href="/projects/new" 
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-white bg-meme-blue hover:bg-meme-blue-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-meme-blue transition-all duration-200"
+                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Post Your Believe project needs
               </Link>
               <Link 
                 href="/projects" 
-                className="inline-flex items-center px-6 py-3 border border-meme-blue text-base font-medium rounded-xl text-meme-blue bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-meme-blue transition-all duration-200"
+                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Browse Projects
               </Link>
+              <button 
+                onClick={() => setIsIdeaModalOpen(true)}
+                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
+              >
+                Generate project ideas
+              </button>
               <Link 
                 href="#" 
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl shadow-sm text-white bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 hover:from-orange-600 hover:via-red-600 hover:to-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 relative group"
+                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95 relative group"
               >
                 Promote your project
                 <span className="absolute -top-2 -right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full font-bold transform rotate-12 group-hover:rotate-0 transition-transform duration-200">Soon</span>
@@ -68,6 +77,11 @@ export default function Home() {
         </div>
         <div className="text-center text-sm text-gray-500 absolute bottom-10 left-0 right-0">Support (SOL): 7WTMAK8Jb7JszSMDWSCa7g4dWN2zhoYKTat7Y4PsssHd</div>
       </div>
+
+      <IdeaGenerationModal 
+        isOpen={isIdeaModalOpen}
+        onClose={() => setIsIdeaModalOpen(false)}
+      />
     </AnimatedBackground>
   );
 }
