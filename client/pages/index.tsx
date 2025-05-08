@@ -79,7 +79,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="text-center text-sm text-gray-500 absolute bottom-10 left-0 right-0">Support (SOL): 7WTMAK8Jb7JszSMDWSCa7g4dWN2zhoYKTat7Y4PsssHd</div>
+        <div className="text-center text-sm text-gray-500 absolute bottom-10 left-0 right-0">Made by <Link href="https://x.com/crypto_yohann" target="_blank" rel="noopener noreferrer" className="text-meme-blue">crypto_yohann</Link></div>
       </div>
 
       <IdeaGenerationModal 
