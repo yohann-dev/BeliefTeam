@@ -2,11 +2,15 @@ import { Request, Response } from 'express';
 import { db } from '../../firebase';
 import admin from 'firebase-admin';
 import express from 'express';
+import { env } from '../config/env';
 const router = express.Router();
 
 export const incrementVisit = async (req: Request, res: Response) => {
   try {
-    const docRef = db.collection('metrics').doc('visits');
+    if (env.NODE_ENV !== 'production') return res.status(200).send();
+
+
+    const docRef = db.collection('DB_METRICS_COLLECTION').doc('visits');
     await docRef.set({ count: admin.firestore.FieldValue.increment(1) }, { merge: true });
     res.status(200).send();
   } catch (err) {
