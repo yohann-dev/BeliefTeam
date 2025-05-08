@@ -1,8 +1,21 @@
 import Link from "next/link";
 import Head from 'next/head';
 import AnimatedBackground from "../components/AnimatedBackground";
+import { useEffect } from "react";
+import axios from "axios";
 
 export default function Home() {
+  useEffect(() => {
+    const incrementVisit = async () => {
+      try {
+        await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/visit`);
+      } catch (error) {
+        console.error('Error incrementing visit:', error);
+      }
+    };
+    incrementVisit();
+  }, []);
+
   return (
     <AnimatedBackground>
       <div className="min-h-screen">

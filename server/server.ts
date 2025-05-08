@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import twitterRoutes from './src/routes/twitterRoutes';
 import believeTokensRoutes from './src/routes/believeTokensRoutes';
+import visitsRoutes from './src/routes/visitsRoutes';
 import { env } from './src/config/env';
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.json());
 // Routes
 app.use('/', twitterRoutes);
 app.use('/', believeTokensRoutes);
+app.use('/', visitsRoutes);
 
 // Start server
 app.listen(env.PORT, () => {
