@@ -48,28 +48,28 @@ export default function Home() {
             <div className="mt-20 grid grid-cols-2 gap-4 max-w-3xl mx-auto">
             <button 
                 onClick={() => setIsIdeaModalOpen(true)}
-                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
+                className="inline-flex items-center justify-center px-6 py-4 text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Generate project ideas
                 <span className="ml-2">💡</span>
               </button>
               <Link 
                 href="/projects" 
-                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
+                className="inline-flex items-center justify-center px-6 py-4 text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Browse Projects
                 <span className="ml-2">📈</span>
               </Link>
               <Link 
                 href="/projects/new" 
-                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
+                className="inline-flex items-center justify-center px-6 py-4 text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Post Your Believe project needs
                 <span className="ml-2">🛠️</span>
               </Link>
               <Link 
                 href="#" 
-                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95 relative group"
+                className="inline-flex items-center justify-center px-6 py-4 text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95 relative group"
               >
                 Micro-Sprints
                 <span className="ml-2">🚀</span>
