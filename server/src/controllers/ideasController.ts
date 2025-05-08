@@ -8,7 +8,7 @@ const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const DEEPSEEK_API_KEY = env.DEEPSEEK_API_KEY;
 
 async function fetchIdeas(ideaType?: string): Promise<string[]> {
-    const promptText = `Give me a project idea for a motivated solopreneur to build. Could be related to crypto, but it should be a serious project. Format it as a tweet. Keep it under 280 characters. Catch attention. It could be a project that is related to ${ideaType}. Give also a token symbol and a name for the project. Don't include any other text than the idea. Don't abuse with emojis.`;
+    const promptText = `Give me a project idea for a motivated solopreneur to build. Could be related to crypto, but it should be a serious project. Format it as a tweet. Keep it under 280 characters. Catch attention. It could be a project that is related to ${ideaType}. Give also a token symbol and a name for the project. Don't include any other text than the idea. Don't abuse with emojis. Give first the token symbol and then the name of the project.`;
 
     try {
         const response = await axios.post(
