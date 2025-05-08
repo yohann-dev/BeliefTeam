@@ -24,6 +24,18 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
+    const resetModal = () => {
+        setSelectedCategory('meme');
+        setGeneratedIdea('');
+        setError('');
+        setIsLoading(false);
+    };
+
+    const handleClose = () => {
+        resetModal();
+        onClose();
+    };
+
     const handleGenerateIdea = async () => {
         try {
             setIsLoading(true);
@@ -42,7 +54,7 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
 
     return (
         <Transition appear show={isOpen} as={Fragment}>
-            <Dialog as="div" className="relative z-50" onClose={onClose}>
+            <Dialog as="div" className="relative z-50" onClose={handleClose}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -75,7 +87,7 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
                                         Generate Project Idea
                                     </Dialog.Title>
                                     <button
-                                        onClick={onClose}
+                                        onClick={handleClose}
                                         className="text-gray-400 hover:text-gray-500 focus:outline-none"
                                     >
                                         <span className="sr-only">Close</span>
@@ -161,7 +173,6 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
                                             </div>
                                         ) : (
                                             <div className="flex items-center">
-                                                <span className="mr-2">🚀</span>
                                                 Generate Project Idea
                                                 <span className="ml-2">💡</span>
                                             </div>

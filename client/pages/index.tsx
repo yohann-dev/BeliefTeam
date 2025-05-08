@@ -52,24 +52,28 @@ export default function Home() {
                 className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Post Your Believe project needs
+                <span className="ml-2">🛠️</span>
               </Link>
               <Link 
                 href="/projects" 
                 className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Browse Projects
+                <span className="ml-2">📈</span>
               </Link>
               <button 
                 onClick={() => setIsIdeaModalOpen(true)}
                 className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
                 Generate project ideas
+                <span className="ml-2">💡</span>
               </button>
               <Link 
                 href="#" 
                 className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 hover:from-yellow-600 hover:via-orange-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95 relative group"
               >
                 Promote your project
+                <span className="ml-2">🚀</span>
                 <span className="absolute -top-2 -right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded-full font-bold transform rotate-12 group-hover:rotate-0 transition-transform duration-200">Soon</span>
               </Link>
             </div>
