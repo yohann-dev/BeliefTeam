@@ -22,6 +22,17 @@ export default function Home() {
         <Head>
           <link rel="icon" href="/beliefteam_logo.png" />
         </Head>
+        {/* Buy Token Button */}
+        <div className="absolute top-4 right-4">
+          <a 
+            href="https://jup.ag/tokens/DddnaQ3Vtr829Scjk7WW8y6r5EBq9aarnfaz2FZ6dss9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200"
+          >
+            Buy $BELIEFTEAM
+          </a>
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
