@@ -294,8 +294,8 @@ export default function Projects() {
             <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-meme-glow">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{selectedToken.coinName}</h2>
-                  <p className="text-meme-blue font-medium">${selectedToken.tokenSymbol}</p>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedToken.coinName ? `${selectedToken.coinName} ` : '-'}</h2>
+                  <p className="text-meme-blue font-medium">${selectedToken.tokenSymbol ? `${selectedToken.tokenSymbol} ` : '-'}</p>
                 </div>
                 <button
                   onClick={() => setSelectedToken(null)}
