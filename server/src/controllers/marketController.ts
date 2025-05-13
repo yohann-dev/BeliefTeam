@@ -106,5 +106,25 @@ export const marketController = {
         cacheTimestamp = now;
         
         return birdeyeMarketData;
+    },
+
+    async getMissingTokenData(tokenAddress: string) {
+        const response = await axios.get(`https://public-api.birdeye.so/defi/v3/token/meta-data/single?address=${tokenAddress}`, {
+            headers: {
+                'X-API-KEY': `${env.BIRDEYE_API_KEY}`
+            }
+        });
+
+        if (!response.data.data) {
+            return null;
+        }
+
+        const tokenData = {
+            symbol: response.data.data.symbol,
+            name: response.data.data.name,
+            tokenLogo: response.data.data.logo_uri,
+        }
+
+        return tokenData;
     }
 }

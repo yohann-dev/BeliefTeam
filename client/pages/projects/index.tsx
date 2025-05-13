@@ -195,7 +195,7 @@ export default function Projects() {
                           {token.marketData?.marketCap ? `${formatMarketCap(token.marketData.marketCap)}` : '-'}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
-                          {token.marketData?.priceChange ? token.marketData.priceChange > 0 ? `+${token.marketData.priceChange}%` : `-${token.marketData.priceChange}%` : '-'}
+                          {token.marketData?.priceChange ? token.marketData.priceChange > 0 ? `+${token.marketData.priceChange}%` : `${token.marketData.priceChange}%` : '-'}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center w-[120px] min-w-[90px]">
                           <a

@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { Scraper, SearchMode } from "agent-twitter-client";
 import { db } from '../../../firebase';
+import { marketController } from '../../../src/controllers/marketController';
 
 const getTweetRepliesFromlaunchcoins = async () => {
     const scraper = new Scraper();
@@ -46,13 +47,13 @@ const getTweetRepliesFromlaunchcoins = async () => {
         }
 
         for (const tweet of response.tweets) {
-            if (tweet.id === lastTweetIdSaved) {
+            const createdAt = tweet.timestamp;
+            if (tweet.id === lastTweetIdSaved || (createdAt && createdAt <= lastTimestampSaved)) {
                 isLast = true;
                 break;
             }
 
-            const createdAt = tweet.timestamp;
-            if (createdAt && createdAt > newestLastTimestamp) {
+            if (createdAt && createdAt >= newestLastTimestamp) {
                 newestLastTimestamp = createdAt;
                 lastTweetIdToSave = tweet.id || '';
             }
@@ -141,11 +142,40 @@ const saveTokensInBatchToFirebase = async (tokensData: any) => {
     }
 };
 
+const updateMissingTokenData = async () => {
+    const tokensRef = db.collection('tokens');
+    const tokens = await tokensRef.where('tokenSymbol', '==', '').get();
+    const tokensData = tokens.docs.map(doc => doc.data());
+    const MAX_REQUESTS_PER_SECOND = 15;
+    let requestsPerSecond = 0;
+    for (const tokenData of tokensData) {
+        requestsPerSecond++;
+        if (requestsPerSecond >= MAX_REQUESTS_PER_SECOND) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            requestsPerSecond = 0;
+        }
+
+        try {
+            const missingTokenData = await marketController.getMissingTokenData(tokenData.tokenAddress);
+            if (!missingTokenData) continue;
+
+            await tokensRef.doc(tokenData.tokenAddress).update({
+                tokenSymbol: tokenData.tokenSymbol || missingTokenData.symbol || '',
+                coinName: tokenData.coinName || missingTokenData.name || '',
+            });
+            console.log(`Updated token data for ${tokenData.tokenAddress} - ${missingTokenData.symbol} - ${missingTokenData.name}`);
+        } catch (error) {
+            console.error(`Error updating token data:`, error);
+        }
+    }
+};
+
 const fetchBelieveTokensAndSaveIt = async () => {
     const tokensDataFromlaunchcoins = await getTweetRepliesFromlaunchcoins();
 
     await saveTokensInBatchToFirebase(tokensDataFromlaunchcoins);
 
+    // await updateMissingTokenData();
     console.log('All tokens saved in the database.');
     process.exit(0);
 };
