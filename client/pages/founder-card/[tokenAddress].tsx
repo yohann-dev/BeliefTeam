@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Head from 'next/head';
 import axiosInstance from '../../lib/axios';
 import { Token } from '../api/tokens/tokens.api';
 import { FormData } from '../../types/form';
@@ -102,52 +101,26 @@ export default function FounderCardPage() {
         );
     }
 
-    const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
-    const description = token.description?.slice(0, 200) + (token.description?.length > 200 ? '...' : '');
-    const imageUrl = `${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/og?tokenAddress=${tokenAddress}&tokenSymbol=${token.tokenSymbol}&coinName=${encodeURIComponent(token.coinName)}`;
-
     return (
-        <>
-            <Head>
-                <title>{`${token.coinName} ($${token.tokenSymbol}) - Founder Card | BeliefTeam`}</title>
-                <meta name="description" content={description} />
-                
-                {/* Open Graph / Facebook */}
-                <meta property="og:type" content="website" />
-                <meta property="og:url" content={pageUrl} />
-                <meta property="og:title" content={`${token.coinName} ($${token.tokenSymbol}) - Founder Card`} />
-                <meta property="og:description" content={description} />
-                <meta property="og:site_name" content="BeliefTeam" />
-                <meta property="og:image" content={imageUrl} />
-                
-                {/* Twitter */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:site" content="@beliefteam" />
-                <meta name="twitter:title" content={`${token.coinName} ($${token.tokenSymbol}) - Founder Card`} />
-                <meta name="twitter:description" content={description} />
-                <meta name="twitter:creator" content={`@${token.author}`} />
-                <meta name="twitter:image" content={imageUrl} />
-            </Head>
-            <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
-                <AnimatedBackground>
-                    <BackButton />
-                    <div className="max-w-3xl mx-auto">
-                        <FounderCard 
-                            token={token}
-                            formData={{
-                                tokenAddress: token.tokenAddress,
-                                tweetLink: token.tweetLink || '',
-                                description: token.description || '',
-                                needs: token.needs || [],
-                                extraInfo: token.extraInfo || '',
-                                contactEmail: token.contactEmail || '',
-                                demoLink: token.demoLink || '',
-                                roadmap: token.roadmap || [],
-                            }}
-                        />
-                    </div>
-                </AnimatedBackground>
-            </div>
-        </>
+        <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+            <AnimatedBackground>
+                <BackButton />
+                <div className="max-w-3xl mx-auto">
+                    <FounderCard 
+                        token={token}
+                        formData={{
+                            tokenAddress: token.tokenAddress,
+                            tweetLink: token.tweetLink || '',
+                            description: token.description || '',
+                            needs: token.needs || [],
+                            extraInfo: token.extraInfo || '',
+                            contactEmail: token.contactEmail || '',
+                            demoLink: token.demoLink || '',
+                            roadmap: token.roadmap || [],
+                        }}
+                    />
+                </div>
+            </AnimatedBackground>
+        </div>
     );
 } 

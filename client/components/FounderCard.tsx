@@ -43,7 +43,7 @@ export default function FounderCard({ token, formData }: FounderCardProps) {
                         View Chart
                     </a>
                     <a
-                        href={`https://twitter.com/intent/tweet?text=Check out ${token.coinName} ($${token.tokenSymbol}) on Belief Team!&url=${encodeURIComponent(window.location.href)}`}
+                        href={`https://twitter.com/intent/tweet?text=Check out $${token.tokenSymbol} on BeliefTeam!&url=${encodeURIComponent(window.location.href)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#1DA1F2] to-[#0D8ECF] text-white rounded-xl hover:from-[#1a94e0] hover:to-[#0c7db8] transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105"
