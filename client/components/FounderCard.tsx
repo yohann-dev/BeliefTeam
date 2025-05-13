@@ -7,9 +7,7 @@ interface FounderCardProps {
     isFounderCard?: boolean;
 }
 
-export default function FounderCard({ token, formData, isFounderCard = false }: FounderCardProps) {
-    console.log('Form Data:', formData);
-    
+export default function FounderCard({ token, formData, isFounderCard = false }: FounderCardProps) {    
     const isFormEmpty = !formData || (
         !formData.tokenLogo &&
         !formData.tweetLink &&
@@ -21,7 +19,7 @@ export default function FounderCard({ token, formData, isFounderCard = false }: 
         (!formData.roadmap || formData.roadmap.length === 0)
     );
 
-    const shareButton = isFounderCard ? (
+    const shareButton = (
         <a
             href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🚀 Just dropped a Founder Card for $${token.tokenSymbol}
 
@@ -40,9 +38,11 @@ https://beliefteam.fun/f/${token.tokenAddress}`)}`}
             </svg>
             Share
         </a>
-    ) : (
+    );
+
+    const emptyStateShareButton = (
         <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`This founder launched ${token.tokenSymbol}
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`This founder launched $${token.tokenSymbol}
 But no Founder Card yet.
 
 🤝 Maybe they're looking for YOU
@@ -53,12 +53,17 @@ https://beliefteam.fun/f/${token.tokenAddress}
 @${token.author} — let the world know what you're building 👇`)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-[#1DA1F2] to-[#0D8ECF] text-white rounded-xl hover:from-[#1a94e0] hover:to-[#0c7db8] transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105 text-sm sm:text-base"
+            className="group relative inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-gradient-to-r from-meme-blue/90 to-meme-blue-accent/90 text-white text-base font-semibold overflow-hidden transition-all duration-300 hover:shadow-meme-glow"
         >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-            Share & Join Early
+            <div className="absolute inset-0 bg-gradient-to-r from-meme-blue to-meme-blue-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative flex items-center gap-3">
+                <svg className="w-5 h-5 transform group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+                <span className="transform group-hover:translate-x-0.5 transition-transform duration-300">Share & Join Early</span>
+            </div>
+            <div className="absolute inset-0 border border-white/20 rounded-xl"></div>
         </a>
     );
 
@@ -136,7 +141,7 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                 </svg>
                                 View Chart
                             </a>
-                            {shareButton}
+                            {isFounderCard && shareButton}
                         </div>
                     </div>
 
@@ -206,19 +211,24 @@ https://beliefteam.fun/f/${token.tokenAddress}
                     </div>
 
                     {/* Unlock Message */}
-                    <div className="text-center py-6 px-4 mt-4">
-                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-meme-blue/10 mb-4">
-                            <svg className="w-6 h-6 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="text-center py-8 px-6 mt-6 bg-gradient-to-br from-meme-blue/5 via-transparent to-meme-blue/5 rounded-xl border border-meme-blue/10">
+                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-meme-blue/10 to-meme-blue/20 mb-4">
+                            <svg className="w-7 h-7 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
                         </div>
-                        <h2 className="text-xl font-bold text-gray-900 mb-2">Content Coming Soon! 🔒</h2>
-                        <p className="text-gray-600 mb-3 max-w-md mx-auto text-sm">
-                            This founder is preparing their vision. Be among the first to discover what they're building!
+                        <h2 className="text-2xl font-bold bg-gradient-to-r from-meme-blue to-meme-blue-dark bg-clip-text text-transparent mb-3">
+                            Founder's Vision Coming Soon! 🚀
+                        </h2>
+                        <p className="text-gray-600 mb-6 max-w-md mx-auto text-base leading-relaxed">
+                            This founder is crafting something special.
                         </p>
-                        <p className="text-meme-blue font-medium max-w-md mx-auto text-sm">
-                            Share this page to nudge them to reveal their roadmap and team needs! 💫
-                        </p>
+                        <div className="flex flex-col items-center gap-4">
+                            <p className="text-meme-blue font-medium text-sm">
+                                Share this page to nudge them to reveal their roadmap and team needs! 💫
+                            </p>
+                            {emptyStateShareButton}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -299,7 +309,7 @@ https://beliefteam.fun/f/${token.tokenAddress}
                             </svg>
                             View Chart
                         </a>
-                        {shareButton}
+                        {isFounderCard && shareButton}
                     </div>
                 </div>
 
@@ -347,10 +357,8 @@ https://beliefteam.fun/f/${token.tokenAddress}
                         </h2>
                         <ul className="space-y-2 sm:space-y-3">
                             {formData.roadmap.map((item, index) => (
-                                <li key={index} className="flex items-start gap-3 group">
-                                    <div className="mt-1.5">
-                                        <div className="w-2 h-2 rounded-full bg-meme-blue group-hover:scale-150 transition-transform duration-200"></div>
-                                    </div>
+                                <li key={index} className="flex items-center gap-3 group">
+                                    <div className="w-2 h-2 rounded-full bg-meme-blue group-hover:scale-150 transition-transform duration-200"></div>
                                     <span className="text-sm sm:text-base text-gray-700 group-hover:text-gray-900 transition-colors duration-200">{item}</span>
                                 </li>
                             ))}

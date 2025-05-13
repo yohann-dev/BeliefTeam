@@ -1,7 +1,6 @@
 import { fetchTokens } from '../../lib/fetchTokens';
 import BackButton from '../../components/BackButton';
 import { useState, useMemo } from 'react';
-import { Token } from '../api/tokens/tokens.api';
 import AnimatedBackground from '../../components/AnimatedBackground';
 
 const TOKENS_PER_PAGE = 10;
@@ -10,20 +9,9 @@ export default function Projects() {
   const { tokens, loading } = fetchTokens();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [showOnlyWithDetails, setShowOnlyWithDetails] = useState(false);
   const [showOnlyWithMarketData, setShowOnlyWithMarketData] = useState(true);
   const [sortBy, setSortBy] = useState<'marketCap' | 'priceChange'>('marketCap');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-
-  const hasAdditionalInfo = (token: Token) => {
-    return Boolean(
-      token.description ||
-      token.needs?.length ||
-      token.tweetLink ||
-      token.extraInfo ||
-      token.contactEmail
-    );
-  };
 
   const handleSort = (column: 'marketCap' | 'priceChange') => {
     if (sortBy === column) {
@@ -47,11 +35,6 @@ export default function Projects() {
       );
     }
 
-    // Apply details filter
-    if (showOnlyWithDetails) {
-      filtered = filtered.filter(hasAdditionalInfo);
-    }
-
     // Apply market data filter
     if (showOnlyWithMarketData) {
       filtered = filtered.filter(token => token.marketData?.marketCap);
@@ -69,7 +52,7 @@ export default function Projects() {
         return sortDirection === 'asc' ? aPriceChange - bPriceChange : bPriceChange - aPriceChange;
       }
     });
-  }, [tokens, searchQuery, showOnlyWithDetails, showOnlyWithMarketData, sortBy, sortDirection]);
+  }, [tokens, searchQuery, showOnlyWithMarketData, sortBy, sortDirection]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
@@ -177,7 +160,7 @@ export default function Projects() {
                           )}
                         </div>
                       </th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px]">Dexscreener</th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px]">Chart</th>
                       <th className="px-4 py-3 w-[120px] min-w-[90px]"></th>
                     </tr>
                   </thead>
@@ -230,9 +213,19 @@ export default function Projects() {
                         <td className="px-4 py-3 whitespace-nowrap w-[120px] min-w-[90px]">
                             <a
                               href={`/founder-card/${token.tokenAddress}`}
-                              className="px-3 py-1 rounded-xl bg-gradient-to-r from-meme-blue to-meme-blue-accent text-white text-xs font-semibold hover:shadow-meme-glow transition-all duration-300"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-meme-blue/90 to-meme-blue-accent/90 text-white text-xs font-semibold overflow-hidden transition-all duration-300 hover:shadow-meme-glow"
                             >
-                              View Card
+                              <div className="absolute inset-0 bg-gradient-to-r from-meme-blue to-meme-blue-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                              <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                              <div className="relative flex items-center gap-2">
+                                <svg className="w-4 h-4 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span className="transform group-hover:translate-x-0.5 transition-transform duration-300">Card</span>
+                              </div>
+                              <div className="absolute inset-0 border border-white/20 rounded-xl"></div>
                             </a>
                         </td>
                       </tr>
