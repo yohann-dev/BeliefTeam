@@ -88,6 +88,19 @@ export const believeTokensController = {
             console.error('Error creating believe token:', error);
             return res.status(500).json({ error: 'Failed to add believe token needs' });
         }
+    },
+
+    async getBelieveToken(req: Request, res: Response) {
+        try {
+            const { tokenAddress } = req.query;
+            const token = await db.collection(DB_TOKEN_COLLECTION).where('tokenAddress', '==', tokenAddress).get();
+            if (!token.docs.length) return res.json([]);
+
+            return res.json(token.docs[0].data());
+        } catch (error: any) {
+            console.error('Error fetching believe token:', error);
+            return res.status(500).json({ error: 'Failed to fetch believe token' });
+        }
     }
 };
 
