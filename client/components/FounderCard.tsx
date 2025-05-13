@@ -95,6 +95,22 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                         <span className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-meme-blue to-meme-blue-dark bg-clip-text text-transparent">
                                             ${token.tokenSymbol}
                                         </span>
+                                        {isFounderCard && (
+                                            <span 
+                                                className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-amber-400/20 to-yellow-500/20 border border-amber-400/30 text-amber-500 shadow-[0_0_15px_rgba(251,191,36,0.15)] cursor-help group relative"
+                                                title="Updated by Founder"
+                                            >
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-gray-900/95 backdrop-blur-sm text-white text-xs font-medium rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap pointer-events-none border border-gray-700/50">
+                                                    Updated by Founder
+                                                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900/95 rotate-45 border-r border-b border-gray-700/50"></span>
+                                                </span>
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="mt-3">
                                         <a
                                             href={`https://x.com/${token.author}`}
                                             target="_blank"
@@ -107,25 +123,23 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                             <span className="group-hover:underline">@{token.author}</span>
                                         </a>
                                     </div>
-                                    {isFounderCard && (
-                                        <div className="mt-3 flex items-center gap-2 text-sm">
-                                            <span className="text-gray-500">Token:</span>
-                                            <div className="flex items-center gap-1.5 bg-gray-50/50 px-2 py-1 rounded-lg border border-gray-100">
-                                                <code className="text-xs font-mono text-gray-600">{token.tokenAddress}</code>
-                                                <button
-                                                    onClick={() => {
-                                                        navigator.clipboard.writeText(token.tokenAddress);
-                                                    }}
-                                                    className="text-gray-400 hover:text-meme-blue transition-colors p-1"
-                                                    title="Copy address"
-                                                >
-                                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                    <div className="mt-3 flex items-center gap-2 text-sm">
+                                        <span className="text-gray-500">Token:</span>
+                                        <div className="flex items-center gap-1.5 bg-gray-50/50 px-2 py-1 rounded-lg border border-gray-100">
+                                            <code className="text-xs font-mono text-gray-600">{token.tokenAddress}</code>
+                                            <button
+                                                onClick={() => {
+                                                    navigator.clipboard.writeText(token.tokenAddress);
+                                                }}
+                                                className="text-gray-400 hover:text-meme-blue transition-colors p-1"
+                                                title="Copy address"
+                                            >
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                                </svg>
+                                            </button>
                                         </div>
-                                    )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,6 +172,13 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                         </svg>
                                     </div>
                                     <h2 className="text-base font-semibold text-gray-900">About the Project</h2>
+                                    <div className="ml-auto">
+                                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-400/20 to-yellow-500/20 border border-amber-400/30 text-amber-500 shadow-[0_0_15px_rgba(251,191,36,0.15)] flex items-center justify-center">
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="h-3 bg-meme-blue/10 rounded-full w-3/4 mb-1.5"></div>
                                 <div className="h-3 bg-meme-blue/10 rounded-full w-1/2"></div>
@@ -175,6 +196,13 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                         </svg>
                                     </div>
                                     <h2 className="text-base font-semibold text-gray-900">Looking for</h2>
+                                    <div className="ml-auto">
+                                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-400/20 to-yellow-500/20 border border-amber-400/30 text-amber-500 shadow-[0_0_15px_rgba(251,191,36,0.15)] flex items-center justify-center">
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     <div className="h-6 bg-meme-blue/10 rounded-xl w-20"></div>
@@ -195,6 +223,13 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                         </svg>
                                     </div>
                                     <h2 className="text-base font-semibold text-gray-900">Roadmap</h2>
+                                    <div className="ml-auto">
+                                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-amber-400/20 to-yellow-500/20 border border-amber-400/30 text-amber-500 shadow-[0_0_15px_rgba(251,191,36,0.15)] flex items-center justify-center">
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="space-y-2">
                                     <div className="flex items-center gap-2">
@@ -212,16 +247,11 @@ https://beliefteam.fun/f/${token.tokenAddress}
 
                     {/* Unlock Message */}
                     <div className="text-center py-8 px-6 mt-6 bg-gradient-to-br from-meme-blue/5 via-transparent to-meme-blue/5 rounded-xl border border-meme-blue/10">
-                        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-meme-blue/10 to-meme-blue/20 mb-4">
-                            <svg className="w-7 h-7 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        </div>
                         <h2 className="text-2xl font-bold bg-gradient-to-r from-meme-blue to-meme-blue-dark bg-clip-text text-transparent mb-3">
                             Founder's Vision Coming Soon! 🚀
                         </h2>
                         <p className="text-gray-600 mb-6 max-w-md mx-auto text-base leading-relaxed">
-                            This founder is crafting something special.
+                            This founder may be crafting something special.
                         </p>
                         <div className="flex flex-col items-center gap-4">
                             <p className="text-meme-blue font-medium text-sm">
@@ -263,6 +293,22 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                     <span className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-meme-blue to-meme-blue-dark bg-clip-text text-transparent">
                                         ${token.tokenSymbol}
                                     </span>
+                                    {isFounderCard && (
+                                        <span 
+                                            className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-amber-400/20 to-yellow-500/20 border border-amber-400/30 text-amber-500 shadow-[0_0_15px_rgba(251,191,36,0.15)] cursor-help group relative"
+                                            title="Updated by Founder"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span className="absolute -top-9 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-gray-900/95 backdrop-blur-sm text-white text-xs font-medium rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap pointer-events-none border border-gray-700/50">
+                                                Updated by Founder
+                                                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900/95 rotate-45 border-r border-b border-gray-700/50"></span>
+                                            </span>
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="mt-3">
                                     <a
                                         href={`https://x.com/${token.author}`}
                                         target="_blank"
@@ -275,25 +321,23 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                         <span className="group-hover:underline">@{token.author}</span>
                                     </a>
                                 </div>
-                                {isFounderCard && (
-                                    <div className="mt-3 flex items-center gap-2 text-sm">
-                                        <span className="text-gray-500">Token:</span>
-                                        <div className="flex items-center gap-1.5 bg-gray-50/50 px-2 py-1 rounded-lg border border-gray-100">
-                                            <code className="text-xs font-mono text-gray-600">{token.tokenAddress}</code>
-                                            <button
-                                                onClick={() => {
-                                                    navigator.clipboard.writeText(token.tokenAddress);
-                                                }}
-                                                className="text-gray-400 hover:text-meme-blue transition-colors p-1"
-                                                title="Copy address"
-                                            >
-                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                <div className="mt-3 flex items-center gap-2 text-sm">
+                                    <span className="text-gray-500">Token:</span>
+                                    <div className="flex items-center gap-1.5 bg-gray-50/50 px-2 py-1 rounded-lg border border-gray-100">
+                                        <code className="text-xs font-mono text-gray-600">{token.tokenAddress}</code>
+                                        <button
+                                            onClick={() => {
+                                                navigator.clipboard.writeText(token.tokenAddress);
+                                            }}
+                                            className="text-gray-400 hover:text-meme-blue transition-colors p-1"
+                                            title="Copy address"
+                                        >
+                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                            </svg>
+                                        </button>
                                     </div>
-                                )}
+                                </div>
                             </div>
                         </div>
                     </div>
