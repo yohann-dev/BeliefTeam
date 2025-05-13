@@ -271,7 +271,7 @@ https://beliefteam.fun/f/${token.tokenAddress}
             <div className="absolute inset-0 border border-meme-blue/10 rounded-2xl pointer-events-none"></div>
             <div className="relative">
                 {/* Header with Token Info */}
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-0 mb-8 sm:mb-12">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 sm:gap-0 mb-8 sm:mb-6">
                     <div className="space-y-2">
                         <div className="flex items-center gap-4">
                             {formData.tokenLogo && (
@@ -320,23 +320,6 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                         <span className="group-hover:underline">@{token.author}</span>
                                     </a>
                                 </div>
-                                <div className="mt-3 flex items-center gap-2 text-sm">
-                                    <span className="text-gray-500">Token:</span>
-                                    <div className="flex items-center gap-1.5 bg-gray-50/50 px-2 py-1 rounded-lg border border-gray-100">
-                                        <code className="text-xs font-mono text-gray-600">{token.tokenAddress}</code>
-                                        <button
-                                            onClick={() => {
-                                                navigator.clipboard.writeText(token.tokenAddress);
-                                            }}
-                                            className="text-gray-400 hover:text-meme-blue transition-colors p-1"
-                                            title="Copy address"
-                                        >
-                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -353,6 +336,24 @@ https://beliefteam.fun/f/${token.tokenAddress}
                             View Chart
                         </a>
                         {isFounderCard && shareButton}
+                    </div>
+                </div>
+
+                <div className="mb-3 flex items-center gap-2 text-sm">
+                    <span className="text-gray-500">Token:</span>
+                    <div className="flex items-center gap-1.5 bg-gray-50/50 px-2 py-1 rounded-lg border border-gray-100">
+                        <code className="text-xs font-mono text-gray-600">{token.tokenAddress}</code>
+                        <button
+                            onClick={() => {
+                                navigator.clipboard.writeText(token.tokenAddress);
+                            }}
+                            className="text-gray-400 hover:text-meme-blue transition-colors p-1"
+                            title="Copy address"
+                        >
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
 
