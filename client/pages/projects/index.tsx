@@ -28,9 +28,9 @@ export default function Projects() {
     // Apply search filter
     if (searchQuery) {
       filtered = filtered.filter(token =>
-        token.tokenSymbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        token.coinName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        token.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.tokenSymbol?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.coinName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.author?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         token.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
