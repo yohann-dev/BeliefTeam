@@ -7,6 +7,9 @@ export interface FormData {
     needs: string[];
     extraInfo: string;
     contactEmail: string;
+    isFounderCard: boolean;
+    demoLink: string;
+    roadmap: string[];
 }
 
 export interface TokenFormProps {

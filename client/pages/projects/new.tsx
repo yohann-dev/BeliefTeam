@@ -40,8 +40,8 @@ export default function NewProject() {
         <div className="max-w-xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-extrabold text-gray-900" >
-              <span className="block">Post Your</span>
-              <span className="block text-meme-blue">Believe project needs</span>
+              <span className="block">Create your</span>
+              <span className="block text-meme-blue">Founder Card</span>
             </h2>
             <p className="mt-2 text-sm text-gray-600">
               {twitterName ? `${twitterName}, share` : " Share"}  your vision with the community

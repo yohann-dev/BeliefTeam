@@ -29,7 +29,7 @@ export const twitterController = {
 
             res.json({ url: `https://api.twitter.com/oauth/authenticate?oauth_token=${oauth_token}` });
         } catch (error: any) {
-            console.error('Error getting Twitter auth link:', error.message);
+            console.error('Error getting Twitter auth link:', error.response?.data);
             res.status(500).json({ 
                 error: 'Failed to get Twitter auth link',
                 details: error.message 

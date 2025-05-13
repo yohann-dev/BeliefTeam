@@ -16,6 +16,9 @@ export type Token = {
         price: number;
         holderCount: number;
     }
+    isFounderCard?: boolean;
+    demoLink?: string;
+    roadmap?: string[];
 };
 
 export async function getTokens(): Promise<Token[]> {

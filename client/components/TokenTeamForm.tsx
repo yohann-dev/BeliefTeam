@@ -22,7 +22,10 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
         description: "",
         needs: [],
         extraInfo: "",
-        contactEmail: twitterEmail || ""
+        contactEmail: twitterEmail || "",
+        isFounderCard: false,
+        demoLink: "",
+        roadmap: [],
     });
 
 
@@ -35,7 +38,10 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
             tweetLink: selectedToken?.tweetLink || "",
             needs: selectedToken?.needs || [],
             extraInfo: selectedToken?.extraInfo || "",
-            contactEmail: selectedToken?.contactEmail || twitterEmail || ""
+            contactEmail: selectedToken?.contactEmail || twitterEmail || "",
+            isFounderCard: selectedToken?.isFounderCard || false,
+            demoLink: selectedToken?.demoLink || "",
+            roadmap: selectedToken?.roadmap || [],
         }));
     };
 

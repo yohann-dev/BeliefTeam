@@ -23,7 +23,7 @@ export default function Home() {
     <AnimatedBackground>
       <div className="min-h-screen">
         <Head>
-          <link rel="icon" href="/beliefteam_logo.png" />
+          <link rel="icon" href="/logo-new.png" />
         </Head>
         {/* Buy Token Button */}
         <div className="absolute top-4 right-4">
@@ -64,7 +64,7 @@ export default function Home() {
                 href="/projects/new" 
                 className="inline-flex items-center justify-center px-6 py-4 text-base font-medium rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-95"
               >
-                Post Your Believe project needs
+                Create Founder Card
                 <span className="ml-2">🛠️</span>
               </Link>
               <Link 
