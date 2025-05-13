@@ -11,5 +11,6 @@ export const env = {
     TWITTER_CALLBACK_URL: process.env.TWITTER_CALLBACK_URL!,
     NODE_ENV: process.env.NODE_ENV || 'development',
     FIREBASE_SERVICE_ACCOUNT: process.env.FIREBASE_SERVICE_ACCOUNT!,
-    DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY!
+    DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY!,
+    BIRDEYE_API_KEY: process.env.BIRDEYE_API_KEY!
 }; 

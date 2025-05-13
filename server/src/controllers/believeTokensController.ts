@@ -20,10 +20,10 @@ export const believeTokensController = {
             const cachedTokens = cacheService.get<QuerySnapshot<DocumentData>>(cacheKey);
             if (cachedTokens) {
                 console.log('Serving tokens from cache');
-                const tokensMarketData = await marketController.getBelieveMarketData();
+                const birdeyeMarketData = await marketController.getBirdEyeMarketData(cachedTokens.docs.map(doc => doc.data().tokenAddress));
                 return res.json(cachedTokens.docs.map(doc => ({
                     ...doc.data(),
-                    marketData: tokensMarketData.get(doc.data().tokenAddress)
+                    marketData: birdeyeMarketData.get(doc.data().tokenAddress)
                 })));
             }
 
@@ -38,10 +38,10 @@ export const believeTokensController = {
             // Store in cache
             cacheService.set(cacheKey, tokens);
 
-            const tokensMarketData = await marketController.getBelieveMarketData();
+            const birdeyeMarketData = await marketController.getBirdEyeMarketData(tokens.docs.map(doc => doc.data().tokenAddress));
             return res.json(tokens.docs.map(doc => ({
                 ...doc.data(),
-                marketData: tokensMarketData.get(doc.data().tokenAddress)
+                marketData: birdeyeMarketData.get(doc.data().tokenAddress)
             })));
         } catch (error: any) {
             console.error('Error fetching believe tokens:', error);

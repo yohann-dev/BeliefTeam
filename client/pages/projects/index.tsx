@@ -12,7 +12,8 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [showOnlyWithDetails, setShowOnlyWithDetails] = useState(false);
-  const [sortBy, setSortBy] = useState<'marketCap' | 'holders'>('marketCap');
+  const [showOnlyWithMarketData, setShowOnlyWithMarketData] = useState(true);
+  const [sortBy, setSortBy] = useState<'marketCap' | 'priceChange'>('marketCap');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   const hasAdditionalInfo = (token: Token) => {
@@ -25,7 +26,7 @@ export default function Projects() {
     );
   };
 
-  const handleSort = (column: 'marketCap' | 'holders') => {
+  const handleSort = (column: 'marketCap' | 'priceChange') => {
     if (sortBy === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
@@ -52,6 +53,11 @@ export default function Projects() {
       filtered = filtered.filter(hasAdditionalInfo);
     }
 
+    // Apply market data filter
+    if (showOnlyWithMarketData) {
+      filtered = filtered.filter(token => token.marketData?.marketCap);
+    }
+
     // Sort by selected criteria
     return filtered.sort((a, b) => {
       if (sortBy === 'marketCap') {
@@ -59,12 +65,12 @@ export default function Projects() {
         const bMarketCap = b.marketData?.marketCap || 0;
         return sortDirection === 'asc' ? aMarketCap - bMarketCap : bMarketCap - aMarketCap;
       } else {
-        const aHolders = a.marketData?.holderCount || 0;
-        const bHolders = b.marketData?.holderCount || 0;
-        return sortDirection === 'asc' ? aHolders - bHolders : bHolders - aHolders;
+        const aPriceChange = a.marketData?.priceChange || 0;
+        const bPriceChange = b.marketData?.priceChange || 0;
+        return sortDirection === 'asc' ? aPriceChange - bPriceChange : bPriceChange - aPriceChange;
       }
     });
-  }, [tokens, searchQuery, showOnlyWithDetails, sortBy, sortDirection]);
+  }, [tokens, searchQuery, showOnlyWithDetails, showOnlyWithMarketData, sortBy, sortDirection]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
@@ -113,15 +119,36 @@ export default function Projects() {
                     className="w-full px-4 py-2 rounded-xl border border-meme-blue bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
                   />
                 </div>
-                <button
-                  onClick={() => setShowOnlyWithDetails(!showOnlyWithDetails)}
-                  className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${showOnlyWithDetails
-                      ? 'bg-meme-blue text-white shadow-meme-glow'
-                      : 'bg-white text-meme-blue border border-meme-blue hover:bg-meme-blue hover:text-white'
-                    }`}
-                >
-                  {showOnlyWithDetails ? 'Show All Projects' : 'Show Only Projects with Details'}
-                </button>
+                <div className="flex flex-col gap-3">
+                <div className="flex items-center">
+                    <label className="relative inline-flex items-center cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={showOnlyWithMarketData}
+                        onChange={(e) => setShowOnlyWithMarketData(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-meme-blue/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-meme-blue"></div>
+                      <span className="ml-3 text-sm font-medium text-gray-900 group-hover:text-meme-blue transition-colors">
+                        Show only projects with market data
+                      </span>
+                    </label>
+                  </div>
+                  {/* <div className="flex items-center">
+                    <label className="relative inline-flex items-center cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={showOnlyWithDetails}
+                        onChange={(e) => setShowOnlyWithDetails(e.target.checked)}
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-meme-blue/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-meme-blue"></div>
+                      <span className="ml-3 text-sm font-medium text-gray-900 group-hover:text-meme-blue transition-colors">
+                        Show only projects with details
+                      </span>
+                    </label>
+                  </div> */}
+                </div>
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 rounded-2xl overflow-hidden shadow-meme bg-white">
@@ -150,11 +177,11 @@ export default function Projects() {
                       </th>
                       <th
                         className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px] cursor-pointer hover:bg-meme-blue-dark transition-colors"
-                        onClick={() => handleSort('holders')}
+                        onClick={() => handleSort('priceChange')}
                       >
                         <div className="flex items-center justify-center gap-1">
-                          Holders
-                          {sortBy === 'holders' && (
+                          24H
+                          {sortBy === 'priceChange' && (
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               {sortDirection === 'asc' ? (
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
@@ -172,7 +199,7 @@ export default function Projects() {
                     {paginatedTokens.map((token, idx) => (
                       <tr key={token.tokenAddress} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-meme-blue-muted'} hover:bg-meme-blue-muted/50 transition-colors`}>
                         <td className="px-4 py-3 whitespace-nowrap font-semibold text-meme-blue w-[150px] min-w-[150px]">
-                          <a href={`https://believe.app/coin/${token.tokenAddress}`} target="_blank" rel="noopener noreferrer" className="hover:text-meme-blue-dark transition-colors">
+                          <a href={`https://dexscreener.com/solana/${token.tokenAddress}`} target="_blank" rel="noopener noreferrer" className="hover:text-meme-blue-dark transition-colors">
                             {token.tokenSymbol && `$${token.tokenSymbol} `}
                           </a>
                         </td>
@@ -201,7 +228,7 @@ export default function Projects() {
                           {token.marketData?.marketCap ? `${formatMarketCap(token.marketData.marketCap)}` : '-'}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
-                          {token.marketData?.holderCount?.toLocaleString() || '-'}
+                          {token.marketData?.priceChange ? token.marketData.priceChange > 0 ? `+${token.marketData.priceChange}%` : `-${token.marketData.priceChange}%` : '-'}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap w-[120px] min-w-[90px]">
                           {hasAdditionalInfo(token) && (

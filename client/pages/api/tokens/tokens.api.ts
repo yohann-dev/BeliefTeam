@@ -14,7 +14,7 @@ export type Token = {
     marketData?: {
         marketCap: number;
         price: number;
-        holderCount: number;
+        priceChange: number;
     }
     isFounderCard?: boolean;
     demoLink?: string;

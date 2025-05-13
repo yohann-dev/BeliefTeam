@@ -1,4 +1,5 @@
 import axios from "axios";
+import { env } from "../config/env";
 
 let cachedMarketData: any = null;
 let cacheTimestamp: number = 0;
@@ -60,5 +61,50 @@ export const marketController = {
         cacheTimestamp = now;
 
         return filterData;
+    },
+
+    async getBirdEyeMarketData(tokenAddresses: string[]) {
+        const queryParams = new URLSearchParams();
+        const MAX_ADDRESS_PER_REQUEST = 100;
+        const MAX_REQUESTS_PER_SECOND = 15;
+        let requestsPerSecond = 0;
+        const birdeyeMarketData = new Map();
+        const now = Date.now();
+        if (cachedMarketData && (now - cacheTimestamp < CACHE_DURATION_MS)) {
+            return cachedMarketData;
+        }
+
+        for (let i = 0; i < tokenAddresses.length; i += MAX_ADDRESS_PER_REQUEST) {  
+            const batch = tokenAddresses.slice(i, i + MAX_ADDRESS_PER_REQUEST);
+            queryParams.set('list_address', batch.join(','));
+            const response = await axios.get(`https://public-api.birdeye.so/defi/multi_price?${queryParams.toString()}`, {
+                headers: {
+                    'X-API-KEY': `${env.BIRDEYE_API_KEY}`
+                }
+            });
+            requestsPerSecond++;
+
+            for (const [address, data] of Object.entries(response.data.data)) {
+                if (typeof data === 'object' && data !== null) {
+                    const { value, priceChange24h } = data as { value: number, priceChange24h: number };
+                    birdeyeMarketData.set(address, {
+                        price: value.toFixed(4),
+                        marketCap: (value * 1000000000).toFixed(0),
+                        priceChange: priceChange24h.toFixed(0)
+                    });
+                }
+            }
+
+            if (requestsPerSecond >= MAX_REQUESTS_PER_SECOND) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                requestsPerSecond = 0;
+            }
+        }
+        
+        // Caching
+        cachedMarketData = birdeyeMarketData;
+        cacheTimestamp = now;
+        
+        return birdeyeMarketData;
     }
 }
