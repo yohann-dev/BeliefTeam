@@ -88,9 +88,9 @@ export const marketController = {
                 if (typeof data === 'object' && data !== null) {
                     const { value, priceChange24h } = data as { value: number, priceChange24h: number };
                     birdeyeMarketData.set(address, {
-                        price: value.toFixed(4),
-                        marketCap: (value * 1000000000).toFixed(0),
-                        priceChange: priceChange24h.toFixed(0)
+                        price: value?.toFixed(4),
+                        marketCap: (value * 1000000000)?.toFixed(0),
+                        priceChange: priceChange24h?.toFixed(0)
                     });
                 }
             }
