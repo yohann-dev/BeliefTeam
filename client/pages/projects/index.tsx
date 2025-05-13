@@ -294,8 +294,13 @@ export default function Projects() {
             <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-meme-glow">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900">{selectedToken.coinName ? `${selectedToken.coinName} ` : '-'}</h2>
-                  <p className="text-meme-blue font-medium">${selectedToken.tokenSymbol ? `${selectedToken.tokenSymbol} ` : '-'}</p>
+                  
+                  {selectedToken.coinName && (
+                    <h2 className="text-2xl font-bold text-gray-900">{selectedToken.coinName}</h2>
+                  )}
+                  {selectedToken.tokenSymbol && (
+                    <p className="text-meme-blue font-medium">${selectedToken.tokenSymbol}</p>
+                  )}
                 </div>
                 <button
                   onClick={() => setSelectedToken(null)}
@@ -363,6 +368,21 @@ export default function Projects() {
                   <div>
                     <h3 className="text-sm font-medium text-meme-blue">Additional Information</h3>
                     <p className="mt-1 text-sm text-gray-900">{selectedToken.extraInfo}</p>
+                  </div>
+                )}
+
+{selectedToken.isFounderCard && (
+                  <div className='flex justify-center'>
+                    <a
+                      href={`/f/${selectedToken.tokenAddress}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-meme-blue to-meme-blue-dark text-white rounded-xl hover:from-meme-blue-dark hover:to-meme-blue transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                      View Founder Card
+                    </a>
                   </div>
                 )}
               </div>

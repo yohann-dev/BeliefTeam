@@ -4,9 +4,10 @@ interface FormModalsProps {
     showSuccessModal: boolean;
     showErrorModal: boolean;
     onCloseError: () => void;
+    tokenAddress?: string;
 }
 
-export default function FormModals({ showSuccessModal, showErrorModal, onCloseError }: FormModalsProps) {
+export default function FormModals({ showSuccessModal, showErrorModal, onCloseError, tokenAddress }: FormModalsProps) {
     const router = useRouter();
 
     return (
@@ -20,17 +21,21 @@ export default function FormModals({ showSuccessModal, showErrorModal, onCloseEr
                             </svg>
                         </div>
                         <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                            Your Vision is Live! 🚀
+                            Founder Card is Ready! 🎉
                         </h3>
                         <p className="text-gray-600 mb-6">
-                            Your project needs have been shared with the community. The right team members will find you - they're already on their way. Stay tuned for connections and opportunities!
+                            Your founder card has been created successfully. Share it with the community to find the right team members for your project!
                         </p>
-                        <button
-                            onClick={() => router.push('/projects')}
-                            className="w-full bg-meme-blue text-white px-4 py-2 rounded-xl hover:bg-meme-blue-dark transition-colors"
-                        >
-                            View All Projects
-                        </button>
+                        <div className="space-y-3">
+                            {tokenAddress && (
+                                <a
+                                    href={`/f/${tokenAddress}`}
+                                    className="block w-full bg-gradient-to-r from-meme-blue to-meme-blue-dark text-white px-4 py-2 rounded-xl hover:from-meme-blue-dark hover:to-meme-blue transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105"
+                                >
+                                    View Founder Card
+                                </a>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}

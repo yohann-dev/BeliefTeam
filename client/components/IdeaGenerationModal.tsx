@@ -50,6 +50,7 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
             // Regex to extract token symbol and name from Markdown-style bold
             const match = response.data[0].match(/\*\*\$(\w+)\s*-\s*(.+?)\*\*/);
 
+            console.log(123, match);
             if (match) {
                 setGeneratedIdeaToken(match[1]);
                 setGeneratedIdeaName(match[2]);
@@ -234,9 +235,9 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
                                             </div>
                                         </div>
                                         <div className="mt-4 flex justify-center">
-                                            {generatedIdeaToken && generatedIdeaName && (
+                                            {generatedIdeaToken && (
                                                 <a
-                                                    href={`https://x.com/intent/tweet?text=${encodeURIComponent(`@launchcoin $${generatedIdeaToken} +${generatedIdeaName}`)}`}
+                                                    href={`https://x.com/intent/tweet?text=${encodeURIComponent(`@launchcoin $${generatedIdeaToken} ${generatedIdeaName ? `+${generatedIdeaName}` : ''}`)}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-all duration-200"

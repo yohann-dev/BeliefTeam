@@ -17,14 +17,14 @@ export default function FounderCard({ token, formData }: FounderCardProps) {
                         <span className="text-2xl font-semibold bg-gradient-to-r from-meme-blue to-meme-blue-dark bg-clip-text text-transparent">
                             ${token.tokenSymbol}
                         </span>
-                        <a 
+                        <a
                             href={`https://x.com/${token.author}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-meme-blue hover:text-meme-blue-dark transition-colors flex items-center gap-1.5 group"
                         >
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                             </svg>
                             <span className="group-hover:underline">@{token.author}</span>
                         </a>
@@ -43,13 +43,20 @@ export default function FounderCard({ token, formData }: FounderCardProps) {
                         View Chart
                     </a>
                     <a
-                        href={`https://twitter.com/intent/tweet?text=Check out $${token.tokenSymbol} on BeliefTeam!&url=${encodeURIComponent(window.location.href)}`}
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`🚀 Just dropped a Founder Card for $${token.tokenSymbol}
+
+🪪 Founder: @${token.author}
+🧩 Looking for: ${formData.needs.join(', ')}
+📍 Project: ${token.description}
+🧭 Roadmap & links inside 👇
+
+https://beliefteam.fun/f/${token.tokenAddress}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#1DA1F2] to-[#0D8ECF] text-white rounded-xl hover:from-[#1a94e0] hover:to-[#0c7db8] transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105"
                     >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                         </svg>
                         Share
                     </a>

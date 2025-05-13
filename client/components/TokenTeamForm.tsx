@@ -283,6 +283,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                 showSuccessModal={showSuccessModal}
                 showErrorModal={showErrorModal}
                 onCloseError={() => setShowErrorModal(false)}
+                tokenAddress={form.tokenAddress}
             />
         </>
     );
