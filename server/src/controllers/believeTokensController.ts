@@ -52,7 +52,7 @@ export const believeTokensController = {
     async addBelieveTokenNeeds(req: Request, res: Response) {
         try {
             const twitter_handle = req.cookies.twitter_handle;
-            const { tokenAddress, tweetLink, twitterHandle, description, needs, extraInfo, contactEmail, roadmap } = req.body;
+            const { tokenAddress, tweetLink, twitterHandle, description, needs, extraInfo, contactEmail, roadmap, tokenLogo } = req.body;
 
             const isExist = await db.collection(DB_TOKEN_COLLECTION)
                 .where('tokenAddress', '==', tokenAddress)
@@ -69,6 +69,7 @@ export const believeTokensController = {
                 description,
                 tweetLink,
                 roadmap,
+                tokenLogo,
                 isFounderCard: true
             });
 
@@ -96,6 +97,7 @@ export const believeTokensController = {
             const token = await db.collection(DB_TOKEN_COLLECTION).where('tokenAddress', '==', tokenAddress).get();
             if (!token.docs.length) return res.json([]);
 
+            // const isFounderCard = token.docs[0].data().isFounderCard;
             return res.json(token.docs[0].data());
         } catch (error: any) {
             console.error('Error fetching believe token:', error);

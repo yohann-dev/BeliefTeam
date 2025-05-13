@@ -19,6 +19,7 @@ export type Token = {
     isFounderCard?: boolean;
     demoLink?: string;
     roadmap?: string[];
+    tokenLogo?: string;
 };
 
 export async function getTokens(): Promise<Token[]> {

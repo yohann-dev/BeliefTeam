@@ -25,6 +25,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
         contactEmail: twitterEmail || "",
         demoLink: "",
         roadmap: [],
+        tokenLogo: "",
     });
 
 
@@ -40,6 +41,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
             contactEmail: selectedToken?.contactEmail || twitterEmail || "",
             demoLink: selectedToken?.demoLink || "",
             roadmap: selectedToken?.roadmap || [],
+            tokenLogo: selectedToken?.tokenLogo || "",
         }));
     };
 
@@ -137,6 +139,47 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                         }`}
                         placeholder="Describe your project, its vision, and what makes it unique..."
                     />
+                </div>
+
+                <div>
+                    <label htmlFor="tokenLogo" className="block text-sm font-medium text-gray-700">
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Token Logo URL
+                        </div>
+                    </label>
+                    <div className="mt-1 flex items-center gap-3">
+                        <input
+                            id="tokenLogo"
+                            name="tokenLogo"
+                            type="url"
+                            disabled={!form.tokenAddress}
+                            value={form.tokenLogo}
+                            onChange={(e) => handleFormChange('tokenLogo', e.target.value)}
+                            className={`flex-1 rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2 ${
+                                !form.tokenAddress ? 'bg-gray-50 cursor-not-allowed' : ''
+                            }`}
+                            placeholder="https://example.com/logo.png"
+                        />
+                        {form.tokenLogo && (
+                            <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-meme-blue">
+                                <img 
+                                    src={form.tokenLogo} 
+                                    alt="Token logo preview" 
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        e.currentTarget.src = 'https://via.placeholder.com/40?text=!';
+                                        e.currentTarget.onerror = null;
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500">
+                        Enter a direct URL to your token's logo image (PNG or JPG recommended)
+                    </p>
                 </div>
 
                 <div>
