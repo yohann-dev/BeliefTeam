@@ -288,7 +288,6 @@ https://beliefteam.fun/f/${token.tokenAddress}
                                 </div>
                             )}
                             <div>
-                                <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 tracking-tight">{token.coinName}</h1>
                                 <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2">
                                     <span className="text-xl sm:text-2xl font-semibold bg-gradient-to-r from-meme-blue to-meme-blue-dark bg-clip-text text-transparent">
                                         ${token.tokenSymbol}
