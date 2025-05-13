@@ -84,12 +84,13 @@ export const twitterController = {
             const cookieOptions = {
                 httpOnly: false,  // Allow JavaScript access
                 secure: env.NODE_ENV === 'production',  // Only true in production
-                sameSite: 'none' as const,  // Allow cross-site cookies
+                sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',  // Use 'lax' in development
                 path: '/',
                 maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-                domain: env.NODE_ENV === 'production' ? 'beliefteam-server-production.up.railway.app' : undefined
+                domain: env.NODE_ENV === 'production' 
+                    ? 'beliefteam-server-production.up.railway.app' 
+                    : undefined  // Let the browser handle the domain in development
             };
-
 
             res.cookie("twitter_handle", screen_name, cookieOptions);
             res.cookie("twitter_name", name, cookieOptions);
@@ -106,6 +107,7 @@ export const twitterController = {
             });
 
             // Redirect with a success message
+            
             res.redirect(`${env.FRONTEND_ORIGIN}/projects/new?login=success`);
         } catch (error: any) {
             console.error('Error handling Twitter callback:', error.message);
@@ -150,7 +152,10 @@ export const twitterController = {
                 path: '/',
                 httpOnly: false,
                 secure: env.NODE_ENV === 'production',
-                sameSite: 'lax' as const
+                sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
+                domain: env.NODE_ENV === 'production' 
+                    ? 'beliefteam-server-production.up.railway.app' 
+                    : undefined
             };
 
             res.clearCookie('twitter_handle', cookieOptions);
