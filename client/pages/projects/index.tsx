@@ -192,6 +192,7 @@ export default function Projects() {
                           )}
                         </div>
                       </th>
+                      <th className="px-4 py-3 text-center text-xs font-semibold text-white uppercase tracking-wider w-[120px] min-w-[90px]">Dexscreener</th>
                       <th className="px-4 py-3 w-[120px] min-w-[90px]"></th>
                     </tr>
                   </thead>
@@ -199,11 +200,9 @@ export default function Projects() {
                     {paginatedTokens.map((token, idx) => (
                       <tr key={token.tokenAddress} className={`${idx % 2 === 0 ? 'bg-white' : 'bg-meme-blue-muted'} hover:bg-meme-blue-muted/50 transition-colors`}>
                         <td className="px-4 py-3 whitespace-nowrap font-semibold text-meme-blue w-[150px] min-w-[150px]">
-                          <a href={`https://dexscreener.com/solana/${token.tokenAddress}`} target="_blank" rel="noopener noreferrer" className="hover:text-meme-blue-dark transition-colors">
-                            {token.tokenSymbol && `$${token.tokenSymbol} `}
-                          </a>
+                            {token.tokenSymbol ? `$${token.tokenSymbol} ` : '-'}
                         </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-gray-900 w-[200px] min-w-[200px] truncate max-w-[200px]">{token.coinName}</td>
+                        <td className="px-4 py-3 whitespace-nowrap text-gray-900 w-[200px] min-w-[200px] truncate max-w-[200px]">{token.coinName ? token.coinName : '-'}</td>
                         <td className="px-4 py-3 whitespace-nowrap text-meme-blue w-[120px] min-w-[120px] max-w-[120px] truncate">
                           <a href={`https://x.com/${token.author}`} target="_blank" rel="noopener noreferrer" className="hover:text-meme-blue-dark transition-colors">
                             @{token.author}
@@ -229,6 +228,19 @@ export default function Projects() {
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
                           {token.marketData?.priceChange ? token.marketData.priceChange > 0 ? `+${token.marketData.priceChange}%` : `-${token.marketData.priceChange}%` : '-'}
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-center w-[120px] min-w-[90px]">
+                          <a
+                            href={`https://dexscreener.com/solana/${token.tokenAddress}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:scale-110 transition-all duration-300"
+                            title="View Chart on Dexscreener"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                          </a>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap w-[120px] min-w-[90px]">
                           {hasAdditionalInfo(token) && (
