@@ -52,7 +52,7 @@ export const believeTokensController = {
     async addBelieveTokenNeeds(req: Request, res: Response) {
         try {
             const twitter_handle = req.cookies.twitter_handle;
-            const { tokenAddress, tweetLink, twitterHandle, description, needs, extraInfo, contactEmail } = req.body;
+            const { tokenAddress, tweetLink, twitterHandle, description, needs, extraInfo, contactEmail, roadmap } = req.body;
 
             const isExist = await db.collection(DB_TOKEN_COLLECTION)
                 .where('tokenAddress', '==', tokenAddress)
@@ -68,6 +68,8 @@ export const believeTokensController = {
                 contactEmail,
                 description,
                 tweetLink,
+                roadmap,
+                isFounderCard: true
             });
 
             // Clear cache after update

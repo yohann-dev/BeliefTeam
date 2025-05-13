@@ -9,7 +9,12 @@ export default function TokenSelector({ tokensList, form, onTokenChange, submitA
             <Listbox value={form.tokenAddress} onChange={onTokenChange}>
                 <div className="relative mt-1">
                     <Listbox.Label className="block text-sm font-medium text-gray-700">
-                        Token Address <span className="text-red-500">*</span>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Token Address <span className="text-red-500">*</span>
+                        </div>
                     </Listbox.Label>
                     <Listbox.Button 
                         className={`relative w-full py-2 pl-3 pr-10 mt-1 text-left bg-white rounded-xl border cursor-pointer focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-meme-blue sm:text-sm hover:border-meme-blue transition-colors ${
@@ -40,18 +45,34 @@ export default function TokenSelector({ tokensList, form, onTokenChange, submitA
                                     key={token.tokenAddress}
                                     value={token.tokenAddress}
                                     className={({ active, selected }) =>
-                                        `cursor-pointer select-none relative py-2 pl-3 pr-9 ${active ? 'text-white bg-meme-blue' : 'text-gray-900'
-                                        } ${selected ? 'bg-meme-blue bg-opacity-10' : ''}`
+                                        `cursor-pointer select-none relative py-2 pl-3 pr-9 ${
+                                            active ? 'text-white bg-meme-blue' : 
+                                            selected ? 'bg-gray-100 text-gray-900' : 
+                                            'text-gray-900'
+                                        }`
                                     }
                                 >
                                     {({ active, selected }) => (
                                         <>
-                                            <div className="flex items-center">
-                                                <span className="font-medium block truncate">
-                                                    ${token.tokenSymbol}
-                                                </span>
-                                                <span className={`ml-2 text-sm ${active ? 'text-white' : 'text-gray-500'}`}>
-                                                    {token.coinName}
+                                            <div className="flex flex-col">
+                                                <div className="flex items-center">
+                                                    <span className="font-medium block truncate">
+                                                        ${token.tokenSymbol}
+                                                    </span>
+                                                    <span className={`ml-2 text-sm ${
+                                                        active ? 'text-white' : 
+                                                        selected ? 'text-gray-700' : 
+                                                        'text-gray-500'
+                                                    }`}>
+                                                        {token.coinName}
+                                                    </span>
+                                                </div>
+                                                <span className={`text-xs ${
+                                                    active ? 'text-white/80' : 
+                                                    selected ? 'text-gray-500' : 
+                                                    'text-gray-400'
+                                                } truncate mt-0.5`}>
+                                                    {token.tokenAddress}
                                                 </span>
                                             </div>
                                             {selected && (

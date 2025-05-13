@@ -23,7 +23,6 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
         needs: [],
         extraInfo: "",
         contactEmail: twitterEmail || "",
-        isFounderCard: false,
         demoLink: "",
         roadmap: [],
     });
@@ -39,7 +38,6 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
             needs: selectedToken?.needs || [],
             extraInfo: selectedToken?.extraInfo || "",
             contactEmail: selectedToken?.contactEmail || twitterEmail || "",
-            isFounderCard: selectedToken?.isFounderCard || false,
             demoLink: selectedToken?.demoLink || "",
             roadmap: selectedToken?.roadmap || [],
         }));
@@ -96,7 +94,12 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
 
                 <div>
                     <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700">
-                        Contact Email <span className="text-red-500">*</span>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            Contact Email <span className="text-red-500">*</span>
+                        </div>
                     </label>
                     <input
                         id="contactEmail"
@@ -110,9 +113,16 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                     />
                 </div>
 
+                <SkillsSelector {...formProps} />
+
                 <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                        Project Description <span className="text-red-500">*</span>
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                            Project Description <span className="text-red-500">*</span>
+                        </div>
                     </label>
                     <textarea
                         id="description"
@@ -131,7 +141,12 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
 
                 <div>
                     <label htmlFor="tweetLink" className="block text-sm font-medium text-gray-700">
-                        Project Link
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                            </svg>
+                            Project Link
+                        </div>
                     </label>
                     <input
                         id="tweetLink"
@@ -147,11 +162,93 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                     />
                 </div>
 
-                <SkillsSelector {...formProps} />
+                <div>
+                    <label htmlFor="demoLink" className="block text-sm font-medium text-gray-700">
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Demo Video Link (Loom)
+                        </div>
+                    </label>
+                    <input
+                        id="demoLink"
+                        name="demoLink"
+                        type="url"
+                        disabled={!form.tokenAddress}
+                        value={form.demoLink}
+                        onChange={(e) => handleFormChange('demoLink', e.target.value)}
+                        className={`mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2 ${
+                            !form.tokenAddress ? 'bg-gray-50 cursor-not-allowed' : ''
+                        }`}
+                        placeholder="Optional: https://www.loom.com/share/..."
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="roadmap" className="block text-sm font-medium text-gray-700">
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                            Roadmap
+                        </div>
+                    </label>
+                    <div className="space-y-2">
+                        {form.roadmap.map((item, index) => (
+                            <div key={index} className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={item}
+                                    onChange={(e) => {
+                                        const newRoadmap = [...form.roadmap];
+                                        newRoadmap[index] = e.target.value;
+                                        handleFormChange('roadmap', newRoadmap);
+                                    }}
+                                    className={`flex-1 rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2 ${
+                                        !form.tokenAddress ? 'bg-gray-50 cursor-not-allowed' : ''
+                                    }`}
+                                    placeholder={`Roadmap item ${index + 1}`}
+                                    disabled={!form.tokenAddress}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const newRoadmap = form.roadmap.filter((_, i) => i !== index);
+                                        handleFormChange('roadmap', newRoadmap);
+                                    }}
+                                    className={`p-2 rounded-xl text-red-500 hover:bg-red-50 transition-colors ${
+                                        !form.tokenAddress ? 'opacity-50 cursor-not-allowed' : ''
+                                    }`}
+                                    disabled={!form.tokenAddress}
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => handleFormChange('roadmap', [...form.roadmap, ''])}
+                            className={`mt-2 w-full py-2 px-4 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-meme-blue ${
+                                !form.tokenAddress ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                            disabled={!form.tokenAddress}
+                        >
+                            Add Roadmap Item
+                        </button>
+                    </div>
+                </div>
 
                 <div>
                     <label htmlFor="extraInfo" className="block text-sm font-medium text-gray-700">
-                        Additional Information
+                        <div className="flex items-center gap-2">
+                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Additional Information
+                        </div>
                     </label>
                     <textarea
                         id="extraInfo"
