@@ -97,7 +97,6 @@ export const believeTokensController = {
             const token = await db.collection(DB_TOKEN_COLLECTION).where('tokenAddress', '==', tokenAddress).get();
             if (!token.docs.length) return res.json([]);
 
-            // const isFounderCard = token.docs[0].data().isFounderCard;
             return res.json(token.docs[0].data());
         } catch (error: any) {
             console.error('Error fetching believe token:', error);

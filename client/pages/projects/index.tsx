@@ -8,7 +8,6 @@ const TOKENS_PER_PAGE = 10;
 
 export default function Projects() {
   const { tokens, loading } = fetchTokens();
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [showOnlyWithDetails, setShowOnlyWithDetails] = useState(false);
@@ -134,20 +133,6 @@ export default function Projects() {
                       </span>
                     </label>
                   </div>
-                  {/* <div className="flex items-center">
-                    <label className="relative inline-flex items-center cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        checked={showOnlyWithDetails}
-                        onChange={(e) => setShowOnlyWithDetails(e.target.checked)}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-meme-blue/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-meme-blue"></div>
-                      <span className="ml-3 text-sm font-medium text-gray-900 group-hover:text-meme-blue transition-colors">
-                        Show only projects with details
-                      </span>
-                    </label>
-                  </div> */}
                 </div>
               </div>
               <div className="overflow-x-auto">
@@ -243,14 +228,12 @@ export default function Projects() {
                           </a>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap w-[120px] min-w-[90px]">
-                          {hasAdditionalInfo(token) && (
-                            <button
-                              onClick={() => setSelectedToken(token)}
+                            <a
+                              href={`/founder-card/${token.tokenAddress}`}
                               className="px-3 py-1 rounded-xl bg-gradient-to-r from-meme-blue to-meme-blue-accent text-white text-xs font-semibold hover:shadow-meme-glow transition-all duration-300"
                             >
-                              View Details
-                            </button>
-                          )}
+                              View Card
+                            </a>
                         </td>
                       </tr>
                     ))}
@@ -288,107 +271,6 @@ export default function Projects() {
           )}
         </div>
 
-        {/* Token Details Modal */}
-        {selectedToken && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-meme-glow">
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  
-                  {selectedToken.coinName && (
-                    <h2 className="text-2xl font-bold text-gray-900">{selectedToken.coinName}</h2>
-                  )}
-                  {selectedToken.tokenSymbol && (
-                    <p className="text-meme-blue font-medium">${selectedToken.tokenSymbol}</p>
-                  )}
-                </div>
-                <button
-                  onClick={() => setSelectedToken(null)}
-                  className="text-gray-400 hover:text-meme-blue transition-colors"
-                >
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-sm font-medium text-meme-blue">Contract Address</h3>
-                  <p className="mt-1 text-sm text-gray-900">{selectedToken.tokenAddress}</p>
-                </div>
-
-                {selectedToken.description && (
-                  <div>
-                    <h3 className="text-sm font-medium text-meme-blue">Description</h3>
-                    <p className="mt-1 text-sm text-gray-900">{selectedToken.description}</p>
-                  </div>
-                )}
-
-                {selectedToken.needs && selectedToken.needs.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-medium text-meme-blue">Project Needs</h3>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {selectedToken.needs.map((need, index) => (
-                        <span key={index} className="px-3 py-1 text-sm font-medium text-meme-blue bg-meme-blue-muted rounded-full border border-meme-blue">
-                          {need}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {selectedToken.tweetLink && (
-                  <div>
-                    <h3 className="text-sm font-medium text-meme-blue">Project link</h3>
-                    <a
-                      href={selectedToken.tweetLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-1 text-sm text-meme-blue hover:text-meme-blue-dark transition-colors"
-                    >
-                      {selectedToken.tweetLink}
-                    </a>
-                  </div>
-                )}
-
-                {selectedToken.contactEmail && (
-                  <div>
-                    <h3 className="text-sm font-medium text-meme-blue">Contact Email</h3>
-                    <a
-                      href={`mailto:${selectedToken.contactEmail}`}
-                      className="mt-1 text-sm text-meme-blue hover:text-meme-blue-dark transition-colors"
-                    >
-                      {selectedToken.contactEmail}
-                    </a>
-                  </div>
-                )}
-
-                {selectedToken.extraInfo && (
-                  <div>
-                    <h3 className="text-sm font-medium text-meme-blue">Additional Information</h3>
-                    <p className="mt-1 text-sm text-gray-900">{selectedToken.extraInfo}</p>
-                  </div>
-                )}
-
-{selectedToken.isFounderCard && (
-                  <div className='flex justify-center'>
-                    <a
-                      href={`/f/${selectedToken.tokenAddress}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-meme-blue to-meme-blue-dark text-white rounded-xl hover:from-meme-blue-dark hover:to-meme-blue transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      View Founder Card
-                    </a>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
       </AnimatedBackground>
     </div>
   );

@@ -14,7 +14,7 @@ export default function FounderCardPage() {
     const [formData, setFormData] = useState<FormData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    const [isFounderCard, setIsFounderCard] = useState(false);
     useEffect(() => {
         const fetchToken = async () => {
             if (!tokenAddress) return;
@@ -44,6 +44,7 @@ export default function FounderCardPage() {
 
                 setToken(tokenData);
                 setFormData(formData);
+                setIsFounderCard(tokenData.isFounderCard);
             } catch (err) {
                 console.error('Error fetching token:', err);
                 setError('Failed to load token data');
@@ -108,7 +109,7 @@ export default function FounderCardPage() {
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
             <AnimatedBackground>
                 <BackButton />
-                <FounderCard token={token} formData={formData} />
+                <FounderCard token={token} formData={formData} isFounderCard={isFounderCard} />
             </AnimatedBackground>
         </div>
     );
