@@ -42,7 +42,7 @@ https://beliefteam.fun/f/${token.tokenAddress}`)}`}
 
     const emptyStateShareButton = (
         <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`This founder launched $${token.tokenSymbol}
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`This founder launched $${token.tokenSymbol} on @believeapp
 But no Founder Card yet.
 
 🤝 Maybe they're looking for YOU
