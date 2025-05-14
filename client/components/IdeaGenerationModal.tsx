@@ -54,6 +54,13 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
             if (match) {
                 setGeneratedIdeaToken(match[1]);
                 setGeneratedIdeaName(match[2]);
+            } else {
+                // Extract token symbol and name from plain text
+                const match2 = response.data[0].match(/\$(\w+)\s*-\s*(.+?)\s*$/);
+                if (match2) {
+                    setGeneratedIdeaToken(match2[1]);
+                    setGeneratedIdeaName(match2[2]);
+                }
             }
         } catch (err) {
             setError('Failed to generate idea. Please try again.');
