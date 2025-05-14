@@ -338,14 +338,18 @@ https://beliefteam.fun/f/${token.tokenAddress}`)}`;
                     This card has been edited by {!isFounderCard ? "the community" : "the founder"}
                 </p>
                 }
-
-                <a href='/projects/new' rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-meme-blue to-meme-blue-dark text-white rounded-xl hover:from-meme-blue-dark hover:to-meme-blue transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105 text-sm font-medium group">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    <span className="group-hover:translate-x-0.5 transition-transform duration-200">Edit Card</span>
-                </a>
             </div>
+        </div>
+    );
+
+    const editCardButton = () => (
+        <div className="flex justify-center mt-4">
+            <a href='/projects/new' rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-meme-blue to-meme-blue-dark text-white rounded-xl hover:from-meme-blue-dark hover:to-meme-blue transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105 text-sm font-medium group">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span className="group-hover:translate-x-0.5 transition-transform duration-200">Edit Card</span>
+            </a>
         </div>
     );
 
@@ -364,6 +368,7 @@ https://beliefteam.fun/f/${token.tokenAddress}`)}`;
 
                 {renderContent()}
                 {!isFounderCard && renderUnlockMessage()}
+                {editCardButton()}
             </div>
         </div>
     );
