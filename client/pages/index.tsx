@@ -78,7 +78,20 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="text-center text-sm text-gray-500 absolute bottom-10 left-0 right-0">Made by <Link href="https://x.com/crypto_yohann" target="_blank" rel="noopener noreferrer" className="text-meme-blue">crypto_yohann</Link></div>
+        <div className="text-center flex justify-center items-center text-sm text-gray-500 absolute bottom-10 left-0 right-0">
+          Made by <Link href="https://x.com/crypto_yohann" target="_blank" rel="noopener noreferrer" className="text-meme-blue">&nbsp;crypto_yohann </Link>
+          <a 
+            href="https://x.com/beliefteamfun" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="inline-flex items-center text-meme-blue hover:text-meme-blue-dark transition-colors"
+          >
+            <span className="mx-2">•</span>
+            <svg className="h-4 w-4 mr-1" fill="black" viewBox="0 0 24 24">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+        </div>
       </div>
 
       <IdeaGenerationModal 
