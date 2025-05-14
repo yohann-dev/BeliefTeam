@@ -50,7 +50,6 @@ export default function IdeaGenerationModal({ isOpen, onClose }: IdeaGenerationM
             // Regex to extract token symbol and name from Markdown-style bold
             const match = response.data[0].match(/\*\*\$(\w+)\s*-\s*(.+?)\*\*/);
 
-            console.log(123, match);
             if (match) {
                 setGeneratedIdeaToken(match[1]);
                 setGeneratedIdeaName(match[2]);
