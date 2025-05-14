@@ -104,8 +104,10 @@ export const marketController = {
         }
         
         // Caching
-        cachedMarketData = birdeyeMarketData;
-        cacheTimestamp = now;
+        if (tokenAddresses.length > 1) {
+            cachedMarketData = birdeyeMarketData;
+            cacheTimestamp = now;
+        }
         
         return birdeyeMarketData;
     },
