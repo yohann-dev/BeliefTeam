@@ -9,7 +9,6 @@ export default function Projects() {
   const { tokens, loading } = fetchTokens();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [showOnlyWithMarketData, setShowOnlyWithMarketData] = useState(true);
   const [sortBy, setSortBy] = useState<'marketCap' | 'priceChange'>('marketCap');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
@@ -35,11 +34,6 @@ export default function Projects() {
       );
     }
 
-    // Apply market data filter
-    if (showOnlyWithMarketData) {
-      filtered = filtered.filter(token => token.marketData?.marketCap);
-    }
-
     // Sort by selected criteria
     return filtered.sort((a, b) => {
       if (sortBy === 'marketCap') {
@@ -52,7 +46,7 @@ export default function Projects() {
         return sortDirection === 'asc' ? aPriceChange - bPriceChange : bPriceChange - aPriceChange;
       }
     });
-  }, [tokens, searchQuery, showOnlyWithMarketData, sortBy, sortDirection]);
+  }, [tokens, searchQuery, sortBy, sortDirection]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredTokens.length / TOKENS_PER_PAGE);
@@ -91,7 +85,8 @@ export default function Projects() {
           ) : (
             <>
 
-              <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-between items-center">
+
+              <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-end items-center">
                 <div className="w-full sm:w-96">
                   <input
                     type="text"
@@ -100,22 +95,6 @@ export default function Projects() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full px-4 py-2 rounded-xl border border-meme-blue bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
                   />
-                </div>
-                <div className="flex flex-col gap-3">
-                <div className="flex items-center">
-                    <label className="relative inline-flex items-center cursor-pointer group">
-                      <input
-                        type="checkbox"
-                        checked={showOnlyWithMarketData}
-                        onChange={(e) => setShowOnlyWithMarketData(e.target.checked)}
-                        className="sr-only peer"
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-meme-blue/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-meme-blue"></div>
-                      <span className="ml-3 text-sm font-medium text-gray-900 group-hover:text-meme-blue transition-colors">
-                        Show only projects with market data
-                      </span>
-                    </label>
-                  </div>
                 </div>
               </div>
               <div className="overflow-x-auto">

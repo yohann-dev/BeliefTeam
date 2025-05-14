@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { Scraper, SearchMode } from "agent-twitter-client";
 import { db } from '../../../firebase';
 import { marketController } from '../../../src/controllers/marketController';
+import { believeTokensController } from '../../../src/controllers/believeTokensController';
 
 const getTweetRepliesFromlaunchcoins = async () => {
     const scraper = new Scraper();
@@ -176,6 +177,8 @@ const fetchBelieveTokensAndSaveIt = async () => {
     await saveTokensInBatchToFirebase(tokensDataFromlaunchcoins);
 
     // await updateMissingTokenData();
+
+    // await believeTokensController.cleanTokensFromDB();
     console.log('All tokens saved in the database.');
     process.exit(0);
 };

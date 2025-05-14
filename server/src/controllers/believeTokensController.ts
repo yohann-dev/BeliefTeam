@@ -32,7 +32,7 @@ export const believeTokensController = {
                 // TODO: prevent from injection attack
                 tokens = await db.collection(DB_TOKEN_COLLECTION).where('author', '==', twitterHandle).get() || [];
             } else {
-                tokens = await db.collection(DB_TOKEN_COLLECTION).get() || [];
+                tokens = await db.collection(DB_TOKEN_COLLECTION).where('isMarketData', '==', true).get() || [];
             }
 
             // Store in cache
@@ -102,6 +102,19 @@ export const believeTokensController = {
             console.error('Error fetching believe token:', error);
             return res.status(500).json({ error: 'Failed to fetch believe token' });
         }
+    },
+
+    async cleanTokensFromDB() {
+        const tokens = await db.collection('tokens').where('isMarketData', '==', false).get();
+        const birdeyeMarketData = await marketController.getBirdEyeMarketData(tokens.docs.map(doc => doc.data().tokenAddress));
+        
+        for (const token of tokens.docs) {
+            const tokenAddress = token.data().tokenAddress;
+            await db.collection('tokens').doc(tokenAddress).update({
+                isMarketData: !!(birdeyeMarketData.get(tokenAddress))
+            });
+        }
+
     }
 };
 
