@@ -70,8 +70,8 @@ export default function Projects() {
           </div>
 
           {loading ? (
-            <div className="min-h-screen flex items-center justify-center">
-              <div className="animate-spin-slow rounded-full h-12 w-12 border-t-2 border-b-2 border-meme-blue"></div>
+            <div className="min-h-[60vh] flex items-center justify-center">
+              <div className="animate-spin-slow rounded-full h-16 w-16 border-t-2 border-b-2 border-meme-blue"></div>
             </div>
           ) : (
             <>
