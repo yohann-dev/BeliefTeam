@@ -55,6 +55,11 @@ export const ideasController = {
             const ideas = await fetchIdeas(ideaType);
 
             await metricsService.incrementMetric('idea_generator');
+            await db.collection('ideas').doc().set({
+                idea: ideas[0],
+                ideaType: ideaType,
+                createdAt: admin.firestore.FieldValue.serverTimestamp()
+            });
 
             return res.json(ideas);
         } catch (error) {
