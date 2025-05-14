@@ -9,12 +9,12 @@ export type Token = {
     description?: string;
     extraInfo?: string;
     needs?: string[];
-    tweetLink?: string;
+    projectLink?: string;
     contactEmail?: string;
     marketData?: {
-        marketCap: number;
-        price: number;
-        priceChange: number;
+        marketCap: string;
+        price: string;
+        priceChange: string;
     }
     isFounderCard?: boolean;
     demoLink?: string;
@@ -27,7 +27,7 @@ export async function getTokens(): Promise<Token[]> {
     return response.data;
 }
 
-export async function getTokensByTwitterHandle(twitterHandle: string): Promise<Token[]> {
-    const response = await axiosInstance.get(`/api/getBelieveTokens?twitterHandle=${twitterHandle}`);
+export async function getTokensByTwitterHandle(twitterHandle: string, founderCardPage: boolean = false): Promise<Token[]> {
+    const response = await axiosInstance.get(`/api/getBelieveTokens?twitterHandle=${twitterHandle}&founderCardPage=${founderCardPage}`);
     return response.data;
 }

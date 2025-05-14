@@ -10,23 +10,25 @@ interface TokenTeamFormProps {
     tokensList: Token[];
     twitterHandle: string;
     twitterEmail: string;
+    isFounderConnected: boolean;
 }
 
-export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail }: TokenTeamFormProps) {
+export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail, isFounderConnected }: TokenTeamFormProps) {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showErrorModal, setShowErrorModal] = useState(false);
     const [submitAttempted, setSubmitAttempted] = useState(false);
     const [form, setForm] = useState<FormData>({
         tokenAddress: "",
-        tweetLink: "",
+        projectLink: "",
         description: "",
         needs: [],
         extraInfo: "",
-        contactEmail: twitterEmail || "",
+        contactEmail: isFounderConnected ? (twitterEmail || "") : "",
         demoLink: "",
         roadmap: [],
         tokenLogo: "",
     });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
 
     const handleTokenChange = (value: string) => {
@@ -35,10 +37,10 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
             ...prev,
             tokenAddress: value,
             description: selectedToken?.description || "",
-            tweetLink: selectedToken?.tweetLink || "",
+            projectLink: selectedToken?.projectLink || "",
             needs: selectedToken?.needs || [],
             extraInfo: selectedToken?.extraInfo || "",
-            contactEmail: selectedToken?.contactEmail || twitterEmail || "",
+            contactEmail: isFounderConnected ? (selectedToken?.contactEmail || twitterEmail || "") : (selectedToken?.contactEmail || ""),
             demoLink: selectedToken?.demoLink || "",
             roadmap: selectedToken?.roadmap || [],
             tokenLogo: selectedToken?.tokenLogo || "",
@@ -71,11 +73,14 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
         }
 
         try {
+            setIsSubmitting(true);
             await axiosInstance.post('/api/addBelieveTokenNeeds', data);
             setShowSuccessModal(true);
         } catch (error) {
             console.error(error);
             setShowErrorModal(true);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -94,10 +99,11 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
 
                 <TokenSelector {...formProps} />
 
-                <div>
-                    <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700">
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isFounderConnected && (
+                    <div>
+                        <label htmlFor="contactEmail" className="block text-sm font-medium text-gray-700">
+                            <div className="flex items-center gap-2">
+                                <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
                             Contact Email <span className="text-red-500">*</span>
@@ -112,10 +118,13 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                         className="mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2"
                         placeholder="your@email.com"
                         required
-                    />
-                </div>
+                        />
+                    </div>
+                )}
 
-                <SkillsSelector {...formProps} />
+                {isFounderConnected && (
+                    <SkillsSelector {...formProps} />
+                )}
 
                 <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
@@ -137,7 +146,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                         className={`mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2 ${
                             !form.tokenAddress ? 'bg-gray-50 cursor-not-allowed' : ''
                         }`}
-                        placeholder="Describe your project, its vision, and what makes it unique..."
+                        placeholder={`Describe ${isFounderConnected ? 'your' : 'the'} project, its vision, and what makes it unique...`}
                     />
                 </div>
 
@@ -178,12 +187,12 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                         )}
                     </div>
                     <p className="mt-1 text-sm text-gray-500">
-                        Enter a direct URL to your token's logo image (PNG or JPG recommended)
+                        Enter a direct URL to {isFounderConnected ? 'your' : 'the'} project's logo image (PNG or JPG recommended)
                     </p>
                 </div>
 
                 <div>
-                    <label htmlFor="tweetLink" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="projectLink" className="block text-sm font-medium text-gray-700">
                         <div className="flex items-center gap-2">
                             <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -192,12 +201,12 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                         </div>
                     </label>
                     <input
-                        id="tweetLink"
-                        name="tweetLink"
+                        id="projectLink"
+                        name="projectLink"
                         type="url"
                         disabled={!form.tokenAddress}
-                        value={form.tweetLink}
-                        onChange={(e) => handleFormChange('tweetLink', e.target.value)}
+                        value={form.projectLink}
+                        onChange={(e) => handleFormChange('projectLink', e.target.value)}
                         className={`mt-1 block w-full rounded-xl border-gray-300 shadow-sm focus:border-meme-blue focus:ring-meme-blue sm:text-sm p-2 ${
                             !form.tokenAddress ? 'bg-gray-50 cursor-not-allowed' : ''
                         }`}
@@ -228,10 +237,11 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                     />
                 </div>
 
-                <div>
-                    <label htmlFor="roadmap" className="block text-sm font-medium text-gray-700">
-                        <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {isFounderConnected && (
+                    <div>
+                        <label htmlFor="roadmap" className="block text-sm font-medium text-gray-700">
+                            <div className="flex items-center gap-2">
+                                <svg className="w-5 h-5 text-meme-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                             </svg>
                             Roadmap
@@ -281,8 +291,9 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                         >
                             Add Roadmap Item
                         </button>
+                        </div>
                     </div>
-                </div>
+                )}
 
                 <div>
                     <label htmlFor="extraInfo" className="block text-sm font-medium text-gray-700">
@@ -307,17 +318,30 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                     />
                 </div>
 
-                <div>
+                <div className="flex justify-center">
                     <button
                         type="submit"
-                        disabled={!form.tokenAddress}
-                        className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white ${
-                            !form.tokenAddress 
-                                ? 'bg-gray-400 cursor-not-allowed' 
-                                : 'bg-meme-blue hover:bg-meme-blue-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-meme-blue transition-all duration-200'
+                        disabled={isSubmitting}
+                        className={`inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-meme-blue to-meme-blue-dark text-white rounded-xl hover:from-meme-blue-dark hover:to-meme-blue transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105 text-sm font-medium group ${
+                            isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                         }`}
                     >
-                        Submit Project
+                        {isSubmitting ? (
+                            <>
+                                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Saving...
+                            </>
+                        ) : (
+                            <>
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                Save Founder Card
+                            </>
+                        )}
                     </button>
                 </div>
             </form>
@@ -327,6 +351,7 @@ export default function TokenTeamForm({ tokensList, twitterHandle, twitterEmail 
                 showErrorModal={showErrorModal}
                 onCloseError={() => setShowErrorModal(false)}
                 tokenAddress={form.tokenAddress}
+                isFounderConnected={isFounderConnected}
             />
         </>
     );

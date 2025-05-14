@@ -2,6 +2,7 @@ import { fetchTokens } from '../../lib/fetchTokens';
 import BackButton from '../../components/BackButton';
 import { useState, useMemo } from 'react';
 import AnimatedBackground from '../../components/AnimatedBackground';
+import { formatMarketCap } from '../../lib/utils';
 
 const TOKENS_PER_PAGE = 10;
 
@@ -37,12 +38,12 @@ export default function Projects() {
     // Sort by selected criteria
     return filtered.sort((a, b) => {
       if (sortBy === 'marketCap') {
-        const aMarketCap = a.marketData?.marketCap || 0;
-        const bMarketCap = b.marketData?.marketCap || 0;
+        const aMarketCap = Number(a.marketData?.marketCap) || 0;
+        const bMarketCap = Number(b.marketData?.marketCap) || 0;
         return sortDirection === 'asc' ? aMarketCap - bMarketCap : bMarketCap - aMarketCap;
       } else {
-        const aPriceChange = a.marketData?.priceChange || 0;
-        const bPriceChange = b.marketData?.priceChange || 0;
+        const aPriceChange = Number(a.marketData?.priceChange) || 0;
+        const bPriceChange = Number(b.marketData?.priceChange) || 0;
         return sortDirection === 'asc' ? aPriceChange - bPriceChange : bPriceChange - aPriceChange;
       }
     });
@@ -54,16 +55,6 @@ export default function Projects() {
     (currentPage - 1) * TOKENS_PER_PAGE,
     currentPage * TOKENS_PER_PAGE
   );
-
-  const formatMarketCap = (marketCap: number) => {
-    if (marketCap >= 1000000000) {
-      return (marketCap / 1000000000).toFixed(2) + 'B';
-    } else if (marketCap >= 1000000) {
-      return (marketCap / 1000000).toFixed(2) + 'M';
-    } else {
-      return (marketCap / 1000).toFixed(0) + 'K';
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-meme-blue-muted py-12 px-4 sm:px-6 lg:px-8 relative">
@@ -171,10 +162,10 @@ export default function Projects() {
                           </div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
-                          {token.marketData?.marketCap ? `${formatMarketCap(token.marketData.marketCap)}` : '-'}
+                          {token.marketData?.marketCap ? `${formatMarketCap(Number(token.marketData.marketCap))}` : '-'}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center text-meme-blue-dark w-[120px] min-w-[90px]">
-                          {token.marketData?.priceChange ? token.marketData.priceChange > 0 ? `+${token.marketData.priceChange}%` : `${token.marketData.priceChange}%` : '-'}
+                          {token.marketData?.priceChange ? Number(token.marketData.priceChange) > 0 ? `+${token.marketData.priceChange}%` : `${token.marketData.priceChange}%` : '-'}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center w-[120px] min-w-[90px]">
                           <a
@@ -192,7 +183,6 @@ export default function Projects() {
                         <td className="px-4 py-3 whitespace-nowrap w-[120px] min-w-[90px]">
                             <a
                               href={`/founder-card/${token.tokenAddress}`}
-                              target="_blank"
                               rel="noopener noreferrer"
                               className="group relative inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-meme-blue/90 to-meme-blue-accent/90 text-white text-xs font-semibold overflow-hidden transition-all duration-300 hover:shadow-meme-glow"
                             >

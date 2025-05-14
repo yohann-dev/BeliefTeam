@@ -11,13 +11,16 @@ export default function NewProject() {
   const { twitterHandle, twitterName, twitterEmail } = useTwitterSession();
   const [tokensList, setTokensList] = useState<Token[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isFounderConnected, setIsFounderConnected] = useState(false);
 
   useEffect(() => {
     if (twitterHandle) {
       setIsLoading(true);
       const loadTokens = async () => {
         try {
-          const tokensListData = await getTokensByTwitterHandle(twitterHandle);
+          const isFounderCardPage = true;
+          const tokensListData = await getTokensByTwitterHandle(twitterHandle, isFounderCardPage);
+          setIsFounderConnected(!!tokensListData.find(token => token.author === twitterHandle));
           setTokensList(tokensListData);
         } catch (error) {
           console.error('Error fetching tokens:', error);
@@ -33,18 +36,20 @@ export default function NewProject() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
       <AnimatedBackground>
-        <TwitterButton />
+        <div className="absolute top-4 right-4">
+          <TwitterButton />
+        </div>
 
         <BackButton />
 
         <div className="max-w-xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-extrabold text-gray-900" >
-              <span className="block">Create your</span>
+              <span className="block">Create a</span>
               <span className="block text-meme-blue">Founder Card</span>
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              {twitterName ? `${twitterName}, share` : " Share"}  your vision with the community
+              {twitterName ? `${twitterName}, share` : " Share"}  project info with the community
             </p>
           </div>
 
@@ -61,7 +66,7 @@ export default function NewProject() {
               </p>
             </div>
           ) : (
-            tokensList.length > 0 ? <TokenTeamForm tokensList={tokensList} twitterHandle={twitterHandle} twitterEmail={twitterEmail} />
+            tokensList.length > 0 ? <TokenTeamForm tokensList={tokensList} twitterHandle={twitterHandle} twitterEmail={twitterEmail} isFounderConnected={isFounderConnected} />
               : (
                 <div>
                   <div className="text-center text-gray-600 mt-20">

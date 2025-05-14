@@ -3,6 +3,9 @@ import axios from 'axios';
 import { env } from '../config/env';
 import { db } from '../../firebase';
 import admin from 'firebase-admin';
+import { MetricsService } from '../services/metrics.service';
+
+const metricsService = new MetricsService();
 
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const DEEPSEEK_API_KEY = env.DEEPSEEK_API_KEY;
@@ -33,6 +36,11 @@ async function fetchIdeas(ideaType?: string): Promise<string[]> {
         );
 
         const generatedText = response.data.choices[0].message.content;
+
+        await db.collection('ideas').doc().set({
+            idea: generatedText,
+            createdAt: admin.firestore.FieldValue.serverTimestamp()
+        });
         return [generatedText];
     } catch (error) {
         console.error('Error generating ideas:', error);
@@ -46,8 +54,7 @@ export const ideasController = {
             const { ideaType } = req.body;
             const ideas = await fetchIdeas(ideaType);
 
-            const docRef = db.collection('metrics').doc('idea_generator');
-            await docRef.set({ count: admin.firestore.FieldValue.increment(1) }, { merge: true });
+            await metricsService.incrementMetric('idea_generator');
 
             return res.json(ideas);
         } catch (error) {

@@ -1,9 +1,15 @@
 import axios from "axios";
 import { env } from "../config/env";
 
+
+// BirdEye Market Data
 let cachedMarketData: any = null;
 let cacheTimestamp: number = 0;
-const CACHE_DURATION_MS = 60 * 60 * 1000;
+const CACHE_DURATION_MS = 5 * 60 * 1000; // 10 minutes
+
+// BirdEye Token Data
+let cachedTokenData = new Map();
+const CACHE_TOKEN_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
 export const marketController = {
 

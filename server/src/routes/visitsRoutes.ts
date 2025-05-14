@@ -4,14 +4,16 @@ import admin from 'firebase-admin';
 import express from 'express';
 import { env } from '../config/env';
 const router = express.Router();
+import { MetricsService } from '../services/metrics.service';
+
+const metricsService = new MetricsService();
 
 export const incrementVisit = async (req: Request, res: Response) => {
   try {
     if (env.NODE_ENV !== 'production') return res.status(200).send();
 
+    await metricsService.incrementMetric('visits');
 
-    const docRef = db.collection('metrics').doc('visits');
-    await docRef.set({ count: admin.firestore.FieldValue.increment(1) }, { merge: true });
     res.status(200).send();
   } catch (err) {
     console.error('Error incrementing visits:', err);

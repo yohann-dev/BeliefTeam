@@ -6,15 +6,18 @@ import { FormData } from '../../types/form';
 import FounderCard from '../../components/FounderCard';
 import AnimatedBackground from '../../components/AnimatedBackground';
 import BackButton from '../../components/BackButton';
-
+import { useTwitterSession } from '../../hooks/useTwitterSession';
 export default function FounderCardPage() {
     const router = useRouter();
     const { tokenAddress } = router.query;
+    const { twitterHandle } = useTwitterSession();
     const [token, setToken] = useState<Token | null>(null);
     const [formData, setFormData] = useState<FormData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isFounderCard, setIsFounderCard] = useState(false);
+    const [isFounderConnected, setIsFounderConnected] = useState(false);
+
     useEffect(() => {
         const fetchToken = async () => {
             if (!tokenAddress) return;
@@ -32,7 +35,7 @@ export default function FounderCardPage() {
                 // Transform token data into FormData format
                 const formData: FormData = {
                     tokenAddress: tokenData.tokenAddress,
-                    tweetLink: tokenData.tweetLink || '',
+                    projectLink: tokenData.projectLink || '',
                     description: tokenData.description || '',
                     needs: tokenData.needs || [],
                     extraInfo: tokenData.extraInfo || '',
@@ -45,6 +48,7 @@ export default function FounderCardPage() {
                 setToken(tokenData);
                 setFormData(formData);
                 setIsFounderCard(tokenData.isFounderCard);
+                setIsFounderConnected(tokenData.author === twitterHandle);
             } catch (err) {
                 console.error('Error fetching token:', err);
                 setError('Failed to load token data');
@@ -73,7 +77,7 @@ export default function FounderCardPage() {
         return (
             <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
                 <AnimatedBackground>
-                    <BackButton />
+                    <BackButton path="/projects" text="Projects" />
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">
                             {error || 'Founder card not found'}
@@ -108,8 +112,16 @@ export default function FounderCardPage() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
             <AnimatedBackground>
-                <BackButton />
-                <FounderCard token={token} formData={formData} isFounderCard={isFounderCard} />
+                <BackButton path="/projects" text="To Projects" />
+                <FounderCard
+                    token={token}
+                    formData={formData}
+                    isFounderCard={isFounderCard}
+                    isFounderConnected={isFounderConnected}
+                    marketCap={token.marketData?.marketCap}
+                    price={token.marketData?.price}
+                    priceChange={token.marketData?.priceChange}
+                    />
             </AnimatedBackground>
         </div>
     );

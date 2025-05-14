@@ -1,9 +1,17 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Token } from "../pages/api/tokens/tokens.api";
 import { TokenFormProps } from "../types/form";
 
 export default function TokenSelector({ tokensList, form, onTokenChange, submitAttempted }: TokenFormProps) {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredTokens = tokensList.filter(token => 
+        token.tokenSymbol?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.coinName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        token.tokenAddress.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div>
             <Listbox value={form.tokenAddress} onChange={onTokenChange}>
@@ -40,52 +48,65 @@ export default function TokenSelector({ tokensList, form, onTokenChange, submitA
                         leaveTo="opacity-0"
                     >
                         <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto bg-white rounded-xl max-h-60 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                            {tokensList.map((token) => (
-                                <Listbox.Option
-                                    key={token.tokenAddress}
-                                    value={token.tokenAddress}
-                                    className={({ active, selected }) =>
-                                        `cursor-pointer select-none relative py-2 pl-3 pr-9 ${
-                                            active ? 'text-white bg-meme-blue' : 
-                                            selected ? 'bg-gray-100 text-gray-900' : 
-                                            'text-gray-900'
-                                        }`
-                                    }
-                                >
-                                    {({ active, selected }) => (
-                                        <>
-                                            <div className="flex flex-col">
-                                                <div className="flex items-center">
-                                                    <span className="font-medium block truncate">
-                                                        ${token.tokenSymbol}
-                                                    </span>
-                                                    <span className={`ml-2 text-sm ${
-                                                        active ? 'text-white' : 
-                                                        selected ? 'text-gray-700' : 
-                                                        'text-gray-500'
-                                                    }`}>
-                                                        {token.coinName}
+                            <div className="sticky top-0 bg-white px-3 py-2 border-b border-gray-200">
+                                <input
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Search tokens..."
+                                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-meme-blue focus:border-transparent"
+                                />
+                            </div>
+                            {filteredTokens.length === 0 ? (
+                                <div className="px-3 py-2 text-sm text-gray-500">No tokens found</div>
+                            ) : (
+                                filteredTokens.map((token) => (
+                                    <Listbox.Option
+                                        key={token.tokenAddress}
+                                        value={token.tokenAddress}
+                                        className={({ active, selected }) =>
+                                            `cursor-pointer select-none relative py-2 pl-3 pr-9 ${
+                                                active ? 'text-white bg-meme-blue' : 
+                                                selected ? 'bg-gray-100 text-gray-900' : 
+                                                'text-gray-900'
+                                            }`
+                                        }
+                                    >
+                                        {({ active, selected }) => (
+                                            <>
+                                                <div className="flex flex-col">
+                                                    <div className="flex items-center">
+                                                        <span className="font-medium block truncate">
+                                                            ${token.tokenSymbol}
+                                                        </span>
+                                                        <span className={`ml-2 text-sm ${
+                                                            active ? 'text-white' : 
+                                                            selected ? 'text-gray-700' : 
+                                                            'text-gray-500'
+                                                        }`}>
+                                                            {token.coinName}
+                                                        </span>
+                                                    </div>
+                                                    <span className={`text-xs ${
+                                                        active ? 'text-white/80' : 
+                                                        selected ? 'text-gray-500' : 
+                                                        'text-gray-400'
+                                                    } truncate mt-0.5`}>
+                                                        {token.tokenAddress}
                                                     </span>
                                                 </div>
-                                                <span className={`text-xs ${
-                                                    active ? 'text-white/80' : 
-                                                    selected ? 'text-gray-500' : 
-                                                    'text-gray-400'
-                                                } truncate mt-0.5`}>
-                                                    {token.tokenAddress}
-                                                </span>
-                                            </div>
-                                            {selected && (
-                                                <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-meme-blue">
-                                                    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                    </svg>
-                                                </span>
-                                            )}
-                                        </>
-                                    )}
-                                </Listbox.Option>
-                            ))}
+                                                {selected && (
+                                                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-meme-blue">
+                                                        <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </span>
+                                                )}
+                                            </>
+                                        )}
+                                    </Listbox.Option>
+                                ))
+                            )}
                         </Listbox.Options>
                     </Transition>
                 </div>

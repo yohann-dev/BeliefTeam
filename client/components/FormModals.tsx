@@ -1,15 +1,12 @@
-import { useRouter } from "next/router";
-
 interface FormModalsProps {
     showSuccessModal: boolean;
     showErrorModal: boolean;
     onCloseError: () => void;
     tokenAddress?: string;
+    isFounderConnected: boolean;
 }
 
-export default function FormModals({ showSuccessModal, showErrorModal, onCloseError, tokenAddress }: FormModalsProps) {
-    const router = useRouter();
-
+export default function FormModals({ showSuccessModal, showErrorModal, onCloseError, tokenAddress, isFounderConnected }: FormModalsProps) {
     return (
         <>
             {showSuccessModal && (
@@ -24,7 +21,7 @@ export default function FormModals({ showSuccessModal, showErrorModal, onCloseEr
                             Founder Card is Ready! 🎉
                         </h3>
                         <p className="text-gray-600 mb-6">
-                            Your founder card has been created successfully. Share it with the community to find the right team members for your project!
+                            {isFounderConnected ? 'Your' : 'The'} founder card has been created successfully. Share it with the community !
                         </p>
                         <div className="space-y-3">
                             {tokenAddress && (

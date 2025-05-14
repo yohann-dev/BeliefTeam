@@ -1,17 +1,18 @@
 import { useRouter } from 'next/router';
 
-export default function BackButton() {
+export default function BackButton({path = '/', text = 'Home'}) {
+
   const router = useRouter();
 
   return (
     <button
-      onClick={() => router.push('/')}
+      onClick={() => router.push(path)}
       className="fixed top-4 left-4 z-50 flex items-center text-meme-blue hover:text-meme-blue-dark transition-colors duration-200 bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
     >
       <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>
-      Back Home
+      Back {text}
     </button>
   );
 } 

@@ -172,9 +172,9 @@ const updateMissingTokenData = async () => {
 };
 
 const fetchBelieveTokensAndSaveIt = async () => {
-    const tokensDataFromlaunchcoins = await getTweetRepliesFromlaunchcoins();
+    // const tokensDataFromlaunchcoins = await getTweetRepliesFromlaunchcoins();
 
-    await saveTokensInBatchToFirebase(tokensDataFromlaunchcoins);
+    // await saveTokensInBatchToFirebase(tokensDataFromlaunchcoins);
 
     // await updateMissingTokenData();
 

@@ -3,7 +3,7 @@ import { Token } from "../pages/api/tokens/tokens.api";
 export interface FormData {
     tokenAddress: string;
     tokenLogo: string;
-    tweetLink: string;
+    projectLink: string;
     description: string;
     needs: string[];
     extraInfo: string;
