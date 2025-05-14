@@ -334,9 +334,10 @@ https://beliefteam.fun/f/${token.tokenAddress}`)}`;
                 This founder may be crafting something special.
             </p>
             <div className="flex flex-col items-center gap-4">
-                <p className="text-meme-blue font-medium text-sm">
-                    This card has been edited by the community
+                {!isFormEmpty && <p className="text-meme-blue font-medium text-sm">
+                    This card has been edited by {!isFounderCard ? "the community" : "the founder"}
                 </p>
+                }
 
                 <a href='/projects/new' rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-meme-blue to-meme-blue-dark text-white rounded-xl hover:from-meme-blue-dark hover:to-meme-blue transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105 text-sm font-medium group">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
