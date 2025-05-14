@@ -72,7 +72,7 @@ export const marketController = {
         let requestsPerSecond = 0;
         const birdeyeMarketData = new Map();
         const now = Date.now();
-        if (cachedMarketData && (now - cacheTimestamp < CACHE_DURATION_MS)) {
+        if (cachedMarketData && cachedMarketData.size > 1 && (now - cacheTimestamp < CACHE_DURATION_MS)) {
             return cachedMarketData;
         }
 
