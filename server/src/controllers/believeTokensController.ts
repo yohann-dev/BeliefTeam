@@ -47,15 +47,14 @@ export const believeTokensController = {
                 // if there is no token for the founder, return all tokens except with isFounderCard: true
                 if (!tokens.docs.length) {
                     tokens = await db.collection(DB_TOKEN_COLLECTION).where('isMarketData', '==', true).get() || [];
+                    cacheService.set(cacheKey, tokens);
                     
                     return res.json(tokens.docs.filter(doc => !doc.data().isFounderCard).map(doc => doc.data()));
                 }
             } else {
                 tokens = await db.collection(DB_TOKEN_COLLECTION).where('isMarketData', '==', true).get() || [];
+                cacheService.set(cacheKey, tokens);
             }
-
-            // Store in cache
-            cacheService.set(cacheKey, tokens);
 
             if (founderCardPage) {
                 await metricsService.incrementMetric('editFounderCard');
