@@ -8,14 +8,17 @@ type DarkModeContextType = {
 const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
 
 export function DarkModeProvider({ children }: { children: React.ReactNode }) {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
     // Check for saved theme preference or system preference
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    if (savedTheme === 'light') {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    } else {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     }
