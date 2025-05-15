@@ -36,13 +36,16 @@ export default function NewProject() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
       <AnimatedBackground>
-        <div className="absolute top-4 right-4">
-          <TwitterButton />
+        <div className="fixed top-4 left-4 right-4 z-50 flex justify-between items-center">
+          <div className="z-50">
+            <BackButton />
+          </div>
+          <div className="z-50">
+            <TwitterButton />
+          </div>
         </div>
 
-        <BackButton />
-
-        <div className="max-w-xl mx-auto">
+        <div className="max-w-xl mx-auto mt-16">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white" >
               <span className="block">Create a</span>
