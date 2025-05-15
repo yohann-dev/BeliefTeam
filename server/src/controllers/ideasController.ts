@@ -107,5 +107,30 @@ export const ideasController = {
             console.error('Error generating ideas:', error);
             res.status(500).json({ error: 'Failed to generate ideas' });
         }
+    },
+
+    async getSavedIdeas(req: Request, res: Response) {
+        try {
+            const ideas = await db.collection('ideas').get();
+            return res.json(ideas.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    ...data,
+                    id: doc.id
+                };
+            }));
+        } catch (error) {
+            console.error('Error fetching saved ideas:', error);
+            res.status(500).json({ error: 'Failed to fetch saved ideas' });
+        }
+    },
+
+    async boostIdea(req: Request, res: Response) {
+        const ideaId = req.query.ideaId as string;
+
+        await db.collection('ideas').doc(ideaId).update({
+            boost: admin.firestore.FieldValue.increment(1)
+        });
+        return res.json({ message: 'Idea boosted' });
     }
 };
