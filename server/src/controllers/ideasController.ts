@@ -128,9 +128,13 @@ export const ideasController = {
     async boostIdea(req: Request, res: Response) {
         const ideaId = req.query.ideaId as string;
 
-        await db.collection('ideas').doc(ideaId).update({
-            boost: admin.firestore.FieldValue.increment(1)
-        });
+        await Promise.all([
+            db.collection('ideas').doc(ideaId).update({
+                boost: admin.firestore.FieldValue.increment(1)
+            }),
+            metricsService.incrementMetric('idea_boosts')
+        ]);
+
         return res.json({ message: 'Idea boosted' });
     }
 };
