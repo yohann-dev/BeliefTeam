@@ -143,6 +143,7 @@ export const believeTokensController = {
         const tokens = await db.collection('tokens').where('isMarketData', '==', false).get();
         const birdeyeMarketData = await marketController.getBirdEyeMarketData(tokens.docs.map(doc => doc.data().tokenAddress));
         
+        console.log(`Found ${tokens.docs.length} tokens to update marketData status`);
         const batchSize = 400;
         for (let i = 0; i < tokens.docs.length; i += batchSize) {
             const batch = db.batch();
@@ -158,6 +159,7 @@ export const believeTokensController = {
             
             await batch.commit();
         }
+        console.log('All marketData status updated');
     }
 };
 

@@ -176,9 +176,9 @@ const fetchBelieveTokensAndSaveIt = async () => {
 
     // await saveTokensInBatchToFirebase(tokensDataFromlaunchcoins);
 
-    // await updateMissingTokenData();
+    await updateMissingTokenData();
 
-    // await believeTokensController.cleanTokensFromDB();
+    await believeTokensController.cleanTokensFromDB();
     console.log('All tokens saved in the database.');
     process.exit(0);
 };
