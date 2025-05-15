@@ -81,7 +81,9 @@ export default function AnimatedBackground({ children }: AnimatedBackgroundProps
       const dpr = window.devicePixelRatio || 1;
 
       // Clear canvas
-      ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+      ctx.fillStyle = document.documentElement.classList.contains('dark') 
+        ? 'rgba(26, 27, 30, 1)' // dark:bg-dark-primary
+        : 'rgba(255, 255, 255, 1)';
       ctx.fillRect(0, 0, rect.width * dpr, rect.height * dpr);
 
       const nodes = nodesRef.current;
@@ -184,7 +186,7 @@ export default function AnimatedBackground({ children }: AnimatedBackgroundProps
     <div className="relative w-full h-full">
       <canvas
         ref={canvasRef}
-        className="fixed top-0 left-0 w-full h-full z-0 bg-white"
+        className="fixed top-0 left-0 w-full h-full z-0 bg-white dark:bg-dark-primary"
       />
       <div className="relative z-10">
         {children}
