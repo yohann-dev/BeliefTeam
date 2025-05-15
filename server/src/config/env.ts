@@ -12,5 +12,6 @@ export const env = {
     NODE_ENV: process.env.NODE_ENV || 'development',
     FIREBASE_SERVICE_ACCOUNT: process.env.FIREBASE_SERVICE_ACCOUNT!,
     DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY!,
-    BIRDEYE_API_KEY: process.env.BIRDEYE_API_KEY!
+    BIRDEYE_API_KEY: process.env.BIRDEYE_API_KEY!,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY!
 }; 

@@ -10,7 +10,10 @@ const metricsService = new MetricsService();
 const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 const DEEPSEEK_API_KEY = env.DEEPSEEK_API_KEY;
 
-async function fetchIdeas(ideaType?: string): Promise<string[]> {
+const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+const OPENAI_API_KEY = env.OPENAI_API_KEY;
+
+async function fetchIdeasFromDeepSeek(ideaType?: string): Promise<string[]> {
     const promptText = `Give me a project idea for a motivated solopreneur to build. Could be related to crypto, but it should be a serious project. Format it as a tweet. Keep it under 280 characters. Catch attention. It could be a project that is related to ${ideaType}. Give also a token symbol and a name for the project. Don't include any other text than the idea. Don't abuse with emojis. Give first the token symbol and then the name of the project.`;
 
     try {
@@ -48,11 +51,49 @@ async function fetchIdeas(ideaType?: string): Promise<string[]> {
     }
 }
 
+async function fetchIdeasFromOpenAI(ideaType?: string): Promise<string[]> {
+    const promptText = `Give me a project idea for a motivated solopreneur to build. Could be related to crypto, but it should be a serious project. Format it as a tweet. Keep it under 280 characters. Catch attention. It could be a project that is related to ${ideaType}. Give also a token symbol and a name for the project. Don't include any other text than the idea. Don't abuse with emojis. Give first the token symbol and then the name of the project.`;
+
+    console.log('Generating ideas with OpenAI...');
+    try {
+        const response = await axios.post(
+            OPENAI_API_URL,
+            {
+                model: "gpt-4o-mini",
+                messages: [
+                    {
+                        role: "user",
+                        content: promptText
+                    }
+                ],
+                temperature: 1,
+                max_tokens: 280
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        console.log('OpenAI idea generated');
+
+        const generatedText = response.data.choices[0].message.content;
+
+        return [generatedText];
+    } catch (error) {
+        console.error('Error generating ideas:', error);
+        throw error;
+    }
+}
+
+
 export const ideasController = {
     async generateIdea(req: Request, res: Response) {
         try {
             const { ideaType } = req.body;
-            const ideas = await fetchIdeas(ideaType);
+            const ideas = await fetchIdeasFromOpenAI(ideaType);
 
             await metricsService.incrementMetric('idea_generator');
             await db.collection('ideas').doc().set({
