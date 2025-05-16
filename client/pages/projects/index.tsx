@@ -2,12 +2,12 @@ import { fetchTokens } from '../../lib/fetchTokens';
 import BackButton from '../../components/BackButton';
 import { useState, useMemo } from 'react';
 import AnimatedBackground from '../../components/AnimatedBackground';
-import { formatMarketCap } from '../../lib/utils';
+import { formatMarketCap, getTimeAgo } from '../../lib/utils';
 
 const TOKENS_PER_PAGE = 10;
 
 export default function Projects() {
-  const { tokens, loading } = fetchTokens();
+  const { tokens, loading, lastUpdatedDate } = fetchTokens();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<'marketCap' | 'priceChange'>('marketCap');
@@ -67,6 +67,11 @@ export default function Projects() {
               <span className="block text-gray-900 dark:text-white">Browse</span>
               <span className="block text-meme-blue animate-pulse-slow">Believe Projects</span>
             </h1>
+            {lastUpdatedDate && (
+              <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+                List updated {getTimeAgo(Number(lastUpdatedDate))}
+              </p>
+            )}
           </div>
 
           {loading ? (

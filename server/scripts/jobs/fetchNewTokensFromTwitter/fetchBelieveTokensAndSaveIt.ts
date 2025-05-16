@@ -49,14 +49,13 @@ const getTweetRepliesFromlaunchcoins = async () => {
 
         for (const tweet of response.tweets) {
             const createdAt = tweet.timestamp;
-            if (tweet.id === lastTweetIdSaved || (createdAt && createdAt <= lastTimestampSaved)) {
-                isLast = true;
-                break;
-            }
-
             if (createdAt && createdAt >= newestLastTimestamp) {
                 newestLastTimestamp = createdAt;
                 lastTweetIdToSave = tweet.id || '';
+            }
+            if (tweet.id === lastTweetIdSaved || (createdAt && createdAt <= lastTimestampSaved)) {
+                isLast = true;
+                break;
             }
 
             const tokenData = getTokenData(tweet);
@@ -172,9 +171,9 @@ const updateMissingTokenData = async () => {
 };
 
 const fetchBelieveTokensAndSaveIt = async () => {
-    // const tokensDataFromlaunchcoins = await getTweetRepliesFromlaunchcoins();
+    const tokensDataFromlaunchcoins = await getTweetRepliesFromlaunchcoins();
 
-    // await saveTokensInBatchToFirebase(tokensDataFromlaunchcoins);
+    await saveTokensInBatchToFirebase(tokensDataFromlaunchcoins);
 
     await updateMissingTokenData();
 

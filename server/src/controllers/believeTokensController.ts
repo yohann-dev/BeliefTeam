@@ -160,6 +160,13 @@ export const believeTokensController = {
             await batch.commit();
         }
         console.log('All marketData status updated');
+    },
+
+    async getTokensLastUpdatedDate(req: Request, res: Response) {
+        const scraperData = await db.collection('meta').doc('scraper').get();
+        const lastUpdatedDate = scraperData.data()?.lastTweetTimestamp;
+
+        return res.json(lastUpdatedDate);
     }
 };
 

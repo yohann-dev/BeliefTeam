@@ -27,6 +27,11 @@ export async function getTokens(): Promise<Token[]> {
     return response.data;
 }
 
+export async function getTokensLastUpdatedDate(): Promise<string> {
+    const response = await axiosInstance.get('/api/getTokensLastUpdatedDate');
+    return response.data;
+}
+
 export async function getTokensByTwitterHandle(twitterHandle: string, founderCardPage: boolean = false): Promise<Token[]> {
     const response = await axiosInstance.get(`/api/getBelieveTokens?twitterHandle=${twitterHandle}&founderCardPage=${founderCardPage}`);
     return response.data;
