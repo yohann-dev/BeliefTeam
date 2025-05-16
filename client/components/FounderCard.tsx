@@ -115,7 +115,7 @@ https://beliefteam.fun/f/${token.tokenAddress}`)}`;
     const renderActionButtons = () => (
         <div className="flex flex-wrap gap-2">
             <a
-                href={`https://dexscreener.com/solana/${token.tokenAddress}`}
+                href={`https://axiom.trade/${token.tokenAddress}/@belieftea`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 shadow-sm hover:shadow-md hover:scale-105 text-sm sm:text-base"
