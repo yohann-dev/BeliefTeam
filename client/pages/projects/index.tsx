@@ -167,7 +167,7 @@ export default function Projects() {
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-center w-[120px] min-w-[90px]">
                           <a
-                            href={`https://axiom.trade/${token.tokenAddress}/@belieftea`}
+                            href={`https://axiom.trade/t/${token.tokenAddress}/@belieftea`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:scale-110 transition-all duration-300"
